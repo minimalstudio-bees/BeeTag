@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BEETAG PRO V3</title>
+    <title>BeeTag PRO</title>
     
     <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/150/4a443f/bee.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/150/4a443f/bee.png">
@@ -33,7 +33,6 @@
 
         input, select, textarea { width: 100%; padding: 16px; border: 2px solid #e8e2dc; border-radius: 14px; font-size: 15px; box-sizing: border-box; margin-bottom: 12px; font-weight: 600; font-family: inherit; color: var(--text); }
         
-        /* Box Colore Regina */
         #reg-colore-visual { height: 50px; border-radius: 14px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: #eee; color: #888; }
 
         .alarm-badge { background: var(--danger); color: white; padding: 15px; border-radius: 15px; font-weight: 900; display: none; text-align: center; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3); animation: pulse 2s infinite; }
@@ -45,12 +44,15 @@
         #stats-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfcfb; z-index: 2000; padding: 25px; box-sizing: border-box; overflow-y: auto; }
         
         .info-label { font-size: 11px; font-weight: 800; color: #8a817c; margin-bottom: 6px; display: block; margin-left: 5px; }
+
+        .export-btn { background: #4a443f; color: white; border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; width: fit-content; }
+        .danger-btn { background: var(--danger); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-bee"></i> BEETAG PRO</div>
+    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-bee"></i> BeeTag</div>
     <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:13px;"><i class="fas fa-history"></i> STORICO</div>
 </header>
 
@@ -69,6 +71,8 @@
 </div>
 
 <div class="container">
+    <button class="export-btn" onclick="exportSingleVisit()"><i class="fas fa-file-export"></i> ESPORTA QUESTA VISITA</button>
+
     <div class="section">
         <h2><i class="fas fa-users"></i> Stato Famiglia</h2>
         <div class="grid" id="forza-selector">
@@ -77,10 +81,10 @@
             <div class="btn-check" onclick="selectOne(this)">SCARSA</div>
         </div>
         <div class="grid">
-            <div class="btn-check" onclick="selectMulti(this)">COV. OPERCOLATA</div>
-            <div class="btn-check" onclick="selectMulti(this)">COV. FRESCA</div>
-            <div class="btn-check" onclick="selectMulti(this)">SCORTE</div>
-            <div class="btn-check" onclick="selectMulti(this)">POLLINE</div>
+            <div class="btn-check" id="cov-op" onclick="selectMulti(this)">COV. OPERCOLATA</div>
+            <div class="btn-check" id="cov-fr" onclick="selectMulti(this)">COV. FRESCA</div>
+            <div class="btn-check" id="scorte" onclick="selectMulti(this)">SCORTE</div>
+            <div class="btn-check" id="polline" onclick="selectMulti(this)">POLLINE</div>
         </div>
     </div>
 
@@ -130,11 +134,11 @@
     <div class="section">
         <h2><i class="fas fa-tools"></i> Operazioni Effettuate</h2>
         <div class="grid">
-            <div class="btn-check" onclick="selectMulti(this)">FORM. NUCLEO</div>
-            <div class="btn-check" onclick="selectMulti(this)">PAREGGIATURA</div>
-            <div class="btn-check" onclick="selectMulti(this)">APISCAMPO</div>
-            <div class="btn-check" onclick="selectMulti(this)">NUTRIZIONE</div>
-            <div class="btn-check" onclick="selectMulti(this)">MESSO MELARIO</div>
+            <div class="btn-check" id="form-nuc" onclick="selectMulti(this)">FORM. NUCLEO</div>
+            <div class="btn-check" id="paregg" onclick="selectMulti(this)">PAREGGIATURA</div>
+            <div class="btn-check" id="apiscampo" onclick="selectMulti(this)">APISCAMPO</div>
+            <div class="btn-check" id="nutr" onclick="selectMulti(this)">NUTRIZIONE</div>
+            <div class="btn-check" id="messo-mel" onclick="selectMulti(this)">MESSO MELARIO</div>
         </div>
         <span class="info-label">FOGLI CEREI AGGIUNTI</span>
         <input type="number" id="fogli-n" placeholder="Numero fogli">
@@ -143,28 +147,20 @@
     <div class="section">
         <h2><i class="fas fa-medkit"></i> Trattamenti Sanitari</h2>
         <div id="tratt-alarm" class="alarm-badge">⚠️ TRATTAMENTO IN CORSO: RIMUOVERE TRA <span id="tratt-days">--</span> GG</div>
-        
-        <span class="info-label">FARMACO UTILIZZATO</span>
-        <select id="tratt-tipo" onchange="updateTrattInfo()">
-            <option value="">Seleziona...</option>
-            <option value="Apivar" data-days="42">Apivar (6 settimane - Amitraz)</option>
-            <option value="Apistan" data-days="42">Apistan (6 settimane - Fluvalinate)</option>
-            <option value="Apiguard" data-days="28">Apiguard (4 settimane - Timolo)</option>
-            <option value="Oxybee" data-days="1">Oxybee (Gocciolato - Ossalico)</option>
-            <option value="Api-Bioxal" data-days="1">Api-Bioxal (Ossalico)</option>
-            <option value="Formico" data-days="7">Acido Formico (Tratt. Breve)</option>
+        <select id="tratt-tipo" onchange="calculateTrattamento()">
+            <option value="" data-days="0">Seleziona...</option>
+            <option value="Apivar" data-days="42">Apivar (6 settimane)</option>
+            <option value="Apistan" data-days="42">Apistan (6 settimane)</option>
+            <option value="Apiguard" data-days="28">Apiguard (4 settimane)</option>
+            <option value="Oxybee" data-days="1">Oxybee</option>
+            <option value="Formico" data-days="7">Acido Formico</option>
         </select>
-        
         <span class="info-label">DATA SOMMINISTRAZIONE</span>
         <input type="date" id="tratt-data" onchange="calculateTrattamento()">
     </div>
 
     <div class="section">
         <h2><i class="fas fa-microphone-alt"></i> Note & Multimedia</h2>
-        <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-camera" style="margin-right:8px;"></i> FOTO <input type="file" accept="image/*" capture="camera" style="display:none"></label>
-            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-microphone" style="margin-right:8px;"></i> AUDIO <input type="file" accept="audio/*" capture style="display:none"></label>
-        </div>
         <textarea id="note-finali" rows="4" placeholder="Annotazioni libere..."></textarea>
     </div>
 
@@ -172,17 +168,22 @@
 </div>
 
 <div id="stats-overlay">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--bg); padding-bottom:15px;">
-        <h2 style="margin:0; border:none;"><i class="fas fa-history"></i> STORICO VISITE</h2>
-        <button onclick="document.getElementById('stats-overlay').style.display='none'" style="background:var(--danger); color:white; border:none; padding:10px 20px; border-radius:12px; font-weight:bold;">CHIUDI</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--bg); padding-bottom:15px; margin-bottom:15px;">
+        <h2 style="margin:0; border:none;"><i class="fas fa-history"></i> STORICO BeeTag</h2>
+        <button onclick="document.getElementById('stats-overlay').style.display='none'" style="background:#4a443f; color:white; border:none; padding:10px; border-radius:12px;">X</button>
     </div>
-    <div id="stats-list" style="margin-top:20px;"></div>
+    
+    <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <button class="export-btn" onclick="exportFullHistory()" style="margin-bottom:0;"><i class="fas fa-download"></i> CSV STORICO</button>
+        <button class="danger-btn" onclick="clearHistory()" style="padding: 8px 15px; font-size: 11px;"><i class="fas fa-trash"></i> CANCELLA TUTTO</button>
+    </div>
+
+    <div id="stats-list"></div>
 </div>
 
 <script>
     const arniaId = new URLSearchParams(window.location.search).get('a') || "1";
 
-    // --- LOGICA INTERFACCIA ---
     function selectOne(el) { 
         el.parentElement.querySelectorAll('.btn-check').forEach(b => b.classList.remove('active')); 
         el.classList.add('active'); 
@@ -195,37 +196,25 @@
         if(el.classList.contains('active')) document.getElementById(targetId).classList.remove('active'); 
     }
 
-    // --- REGINA: COLORE AUTOMATICO ---
     function updateReginaUI(anno) {
         const box = document.getElementById('reg-colore-visual');
-        const colori = { 
-            "2024": ["#2ecc71", "VERDE"], 
-            "2025": ["#3498db", "BLU"], 
-            "2026": ["#ffffff", "BIANCO"], 
-            "2027": ["#f1c40f", "GIALLO"], 
-            "2028": ["#e74c3c", "ROSSO"] 
-        };
+        const colori = { "4":"#2ecc71", "9":"#2ecc71", "0":"#3498db", "5":"#3498db", "1":"#ffffff", "6":"#ffffff", "2":"#f1c40f", "7":"#f1c40f", "3":"#e74c3c", "8":"#e74c3c" };
+        const nomi = { "4":"VERDE", "9":"VERDE", "0":"BLU", "5":"BLU", "1":"BIANCO", "6":"BIANCO", "2":"GIALLO", "7":"GIALLO", "3":"ROSSO", "8":"ROSSO" };
         const lastDigit = anno.toString().slice(-1);
-        const map = {"4":"2024", "9":"2024", "0":"2025", "5":"2025", "1":"2026", "6":"2026", "2":"2027", "7":"2027", "3":"2028", "8":"2028"};
-        
-        let target = map[lastDigit] || anno;
-        if(colori[target]) {
-            box.style.background = colori[target][0];
-            box.innerText = colori[target][1];
-            box.style.color = target == "2026" ? "#000" : "#fff";
-            box.style.borderColor = "#4a443f";
+        if(colori[lastDigit]) {
+            box.style.background = colori[lastDigit];
+            box.innerText = nomi[lastDigit];
+            box.style.color = (lastDigit=="1" || lastDigit=="6") ? "#000" : "#fff";
         } else {
             box.style.background = "#eee"; box.innerText = "COLORE REGINA"; box.style.color = "#888";
         }
     }
 
-    // --- CALCOLI SCADENZE ---
     function calculateBlocco() {
         const inizio = new Date(document.getElementById('blocco-inizio').value);
         if(isNaN(inizio)) return;
         const fine = new Date(inizio); fine.setDate(fine.getDate() + 21);
-        const oggi = new Date();
-        const diff = Math.ceil((fine - oggi) / (1000 * 60 * 60 * 24));
+        const diff = Math.ceil((fine - new Date()) / 86400000);
         const badge = document.getElementById('blocco-alarm');
         if(diff > 0) { badge.style.display = 'block'; document.getElementById('days-to-go').innerText = diff; }
         else { badge.style.display = 'none'; }
@@ -235,80 +224,93 @@
         const tipo = document.getElementById('tratt-tipo');
         const giorni = tipo.options[tipo.selectedIndex].getAttribute('data-days');
         const inizio = new Date(document.getElementById('tratt-data').value);
-        if(!giorni || isNaN(inizio)) return;
-        
+        if(!giorni || giorni == "0" || isNaN(inizio)) return;
         const fine = new Date(inizio); fine.setDate(fine.getDate() + parseInt(giorni));
-        const oggi = new Date();
-        const diff = Math.ceil((fine - oggi) / (1000 * 60 * 60 * 24));
+        const diff = Math.ceil((fine - new Date()) / 86400000);
         const badge = document.getElementById('tratt-alarm');
         if(diff > 0) { badge.style.display = 'block'; document.getElementById('tratt-days').innerText = diff; }
         else { badge.style.display = 'none'; }
     }
 
-    // --- SALVATAGGIO ---
     function saveAll() {
+        const forzaAttiva = document.querySelector('#forza-selector .active')?.innerText || "ND";
         const dataVisita = {
             id: arniaId,
             data: new Date().toLocaleDateString('it-IT'),
-            forza: document.querySelector('#forza-selector .active')?.innerText || "ND",
+            forza: forzaAttiva,
             note: document.getElementById('note-finali').value || "Nessuna nota",
-            sciamatura: document.getElementById('presenza-celle').classList.contains('active') ? "CELLE!" : "OK"
+            sciamatura: document.getElementById('presenza-celle').classList.contains('active') ? "CELLE" : "OK",
+            trattamento: document.getElementById('tratt-tipo').value || "Nessuno"
         };
         
-        // Salvataggio storico apiario
-        let db = JSON.parse(localStorage.getItem('beetag_history_v3')) || [];
+        let db = JSON.parse(localStorage.getItem('beetag_db')) || [];
         db.unshift(dataVisita);
-        localStorage.setItem('beetag_history_v3', JSON.stringify(db.slice(0, 100)));
+        localStorage.setItem('beetag_db', JSON.stringify(db.slice(0, 500)));
+        localStorage.setItem('beetag_last_' + arniaId, JSON.stringify(dataVisita));
         
-        // Salvataggio ultima visita specifica arnia
-        localStorage.setItem('beetag_last_arn_' + arniaId, JSON.stringify(dataVisita));
-        
-        alert("✅ Visita Arnia " + arniaId + " salvata correttamente!");
+        alert("✅ Visita Arnia " + arniaId + " salvata!");
         location.reload();
     }
 
     function showStats() {
-        const overlay = document.getElementById('stats-overlay');
-        overlay.style.display = 'block';
-        const db = JSON.parse(localStorage.getItem('beetag_history_v3')) || [];
+        document.getElementById('stats-overlay').style.display = 'block';
+        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
         document.getElementById('stats-list').innerHTML = db.length > 0 ? db.map(r => `
             <div style="background:#fff; border:2px solid #eee; border-radius:15px; padding:15px; margin-bottom:12px; border-left:6px solid ${r.sciamatura == 'OK' ? '#6b705c' : '#9e2a2b'}">
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <strong style="font-size:16px;">ARNIA ${r.id}</strong>
-                    <span style="color:#888; font-size:12px;">${r.data}</span>
-                </div>
-                <div style="font-size:13px; margin-bottom:5px;"><strong>FORZA:</strong> ${r.forza} | <strong>CELLE:</strong> ${r.sciamatura}</div>
-                <div style="font-size:12px; color:#555; font-style:italic;">"${r.note}"</div>
+                <strong>ARNIA ${r.id}</strong> - ${r.data}<br>
+                <small>FORZA: ${r.forza} | CELLE: ${r.sciamatura} | TRATT: ${r.trattamento}</small><br>
+                <i style="font-size:11px; color:#666;">"${r.note}"</i>
             </div>
-        `).join('') : "<p style='text-align:center; color:#888;'>Nessun dato registrato.</p>";
+        `).join('') : "<p style='text-align:center;'>Nessun dato.</p>";
     }
 
-    // --- AVVIO APP ---
-    window.onload = () => {
-        // GPS & Meteo Reale
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude; const lon = pos.coords.longitude;
-                // Nome città
-                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=it`)
-                .then(r => r.json()).then(d => document.getElementById('loc-name').innerText = d.city || d.locality || "APIARIO");
-                // Meteo
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
-                .then(r => r.json()).then(m => {
-                    document.getElementById('temp-val').innerText = Math.round(m.current_weather.temperature) + "°";
-                    const code = m.current_weather.weathercode;
-                    let icon = '☀️'; if(code > 3) icon = '☁️'; if(code > 50) icon = '🌧️';
-                    document.getElementById('meteo-icon').innerText = icon;
-                });
-            }, () => { document.getElementById('loc-name').innerText = "GPS DISATTIVATO"; });
+    function clearHistory() {
+        if(confirm("Sei sicuro di voler CANCELLARE TUTTO lo storico? Questa azione è irreversibile (utile per nuove famiglie).")) {
+            localStorage.removeItem('beetag_db');
+            localStorage.removeItem('beetag_last_' + arniaId);
+            alert("Storico resettato."); location.reload();
         }
-        
-        // Carica dati ultima visita
-        const last = JSON.parse(localStorage.getItem('beetag_last_arn_' + arniaId));
+    }
+
+    function exportFullHistory() {
+        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
+        if(db.length === 0) return alert("Nessun dato da esportare.");
+        let csv = "ID_ARNIA,DATA,FORZA,SCIAMATURA,TRATTAMENTO,NOTE\n";
+        db.forEach(r => { csv += `${r.id},${r.data},${r.forza},${r.sciamatura},${r.trattamento},${r.note.replace(/,/g, ';')}\n`; });
+        downloadFile(csv, "BeeTag_Storico_Completo.csv");
+    }
+
+    function exportSingleVisit() {
+        const forza = document.querySelector('#forza-selector .active')?.innerText || "ND";
+        const note = document.getElementById('note-finali').value || "";
+        const data = new Date().toLocaleDateString();
+        let content = `BeeTag - Report Visita Arnia ${arniaId}\nData: ${data}\nForza: ${forza}\nCelle: ${document.getElementById('presenza-celle').classList.contains('active') ? 'SI' : 'NO'}\nNote: ${note}`;
+        downloadFile(content, `BeeTag_Arnia${arniaId}_Visita_${data.replace(/\//g, '-')}.txt`);
+    }
+
+    function downloadFile(content, fileName) {
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = fileName; a.click();
+    }
+
+    window.onload = () => {
+        const last = JSON.parse(localStorage.getItem('beetag_last_' + arniaId));
         if(last) {
             document.getElementById('last-data').innerText = last.data;
             document.getElementById('last-forza').innerText = last.forza;
-            document.getElementById('last-forza').style.color = last.forza == 'FORTE' ? '#6b705c' : '#d4a373';
+            document.getElementById('last-forza').style.color = (last.forza === 'FORTE') ? 'var(--ok)' : 'var(--accent)';
+        }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=it`)
+                .then(r => r.json()).then(d => document.getElementById('loc-name').innerText = d.city || d.locality);
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`)
+                .then(r => r.json()).then(m => {
+                    document.getElementById('temp-val').innerText = Math.round(m.current_weather.temperature) + "°";
+                    document.getElementById('meteo-icon').innerText = m.current_weather.weathercode < 3 ? '☀️' : '☁️';
+                });
+            });
         }
     };
 </script>
