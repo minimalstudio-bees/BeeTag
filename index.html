@@ -3,110 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BeeTag PRO</title>
+    <title>BeeTag - Minimal Studio</title>
     
     <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/150/4a443f/bee.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/150/4a443f/bee.png">
     <meta name="theme-color" content="#bcaf9f">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root { --bg: #bcaf9f; --card: #fdfcfb; --text: #4a443f; --accent: #d4a373; --danger: #9e2a2b; --ok: #6b705c; --header: #2c2a28; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 160px; line-height: 1.4; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 220px; line-height: 1.5; }
         
-        header { background: var(--header); color: #fff; padding: 18px; display: flex; justify-content: space-between; align-items: center; font-weight: 900; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        header { background: var(--header); color: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 900; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         
         .dashboard-top { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin: 15px; }
-        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; min-height: 100px; }
-        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; border: 1px solid rgba(0,0,0,0.1); }
+        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; min-height: 110px; }
+        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; border: 1px solid rgba(0,0,0,0.05); }
 
         .container { padding: 0 15px; }
-        .section { background: var(--card); border-radius: 22px; padding: 20px; margin-bottom: 22px; border-top: 6px solid var(--accent); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .section { background: var(--card); border-radius: 25px; padding: 22px; margin-bottom: 25px; border-top: 6px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        h2 { font-size: 14px; text-transform: uppercase; color: #5d5753; border-bottom: 1px solid #f0edea; padding-bottom: 10px; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; margin-top: 0; letter-spacing: 0.5px; }
+        h2 { font-size: 14px; text-transform: uppercase; color: #5d5753; border-bottom: 2px solid #f0edea; padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; margin-top: 0; letter-spacing: 1px; }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .btn-check { min-height: 55px; background: #fff; border: 2px solid #e8e2dc; border-radius: 14px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; color: var(--text); }
-        .btn-check.active { background: var(--accent) !important; color: #fff !important; border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px; }
+        .btn-check { min-height: 60px; background: #fff; border: 2px solid #e8e2dc; border-radius: 16px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; color: var(--text); }
+        .btn-check.active { background: var(--accent) !important; color: #fff !important; border-color: var(--accent); transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .btn-check.danger.active { background: var(--danger) !important; border-color: var(--danger); }
 
-        input, select, textarea { width: 100%; padding: 16px; border: 2px solid #e8e2dc; border-radius: 14px; font-size: 15px; box-sizing: border-box; margin-bottom: 12px; font-weight: 600; font-family: inherit; color: var(--text); }
+        input, select, textarea { width: 100%; padding: 18px; border: 2px solid #e8e2dc; border-radius: 16px; font-size: 16px; box-sizing: border-box; margin-bottom: 15px; font-weight: 600; font-family: inherit; color: var(--text); background: #f9f8f7; }
         
-        #reg-colore-visual { height: 50px; border-radius: 14px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: #eee; color: #888; }
+        #reg-colore-visual { height: 60px; border-radius: 16px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; background: #eee; color: #888; }
 
-        .alarm-badge { background: var(--danger); color: white; padding: 15px; border-radius: 15px; font-weight: 900; display: none; text-align: center; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.3); animation: pulse 2s infinite; }
-        
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+        .alarm-badge { background: var(--danger); color: white; padding: 18px; border-radius: 18px; font-weight: 900; display: none; text-align: center; margin-bottom: 18px; border: 2px solid rgba(255,255,255,0.2); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.98); } 100% { transform: scale(1); } }
 
-        .btn-save { position: fixed; bottom: 20px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 24px; border: none; border-radius: 25px; font-size: 20px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 1px; }
+        .btn-save { position: fixed; bottom: 85px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 25px; border: none; border-radius: 30px; font-size: 22px; font-weight: 900; z-index: 1000; box-shadow: 0 12px 30px rgba(0,0,0,0.4); text-transform: uppercase; }
         
+        .footer-minimal { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); padding: 20px; text-align: center; z-index: 999; }
+        .footer-minimal a { color: var(--header); text-decoration: none; font-weight: 900; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+
         #stats-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfcfb; z-index: 2000; padding: 25px; box-sizing: border-box; overflow-y: auto; }
+        .export-btn { background: #4a443f; color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px; }
         
-        .info-label { font-size: 11px; font-weight: 800; color: #8a817c; margin-bottom: 6px; display: block; margin-left: 5px; }
-
-        .export-btn { background: #4a443f; color: white; border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 10px; width: fit-content; }
-        .danger-btn { background: var(--danger); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .info-label { font-size: 11px; font-weight: 800; color: #8a817c; margin-bottom: 8px; display: block; margin-left: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="display:flex; align-items:center; gap:10px;"><i class="fas fa-bee"></i> BeeTag</div>
-    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:13px;"><i class="fas fa-history"></i> STORICO</div>
+    <div style="display:flex; align-items:center; gap:12px;"><i class="fas fa-bee"></i> BeeTag</div>
+    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:10px 18px; border-radius:14px; font-size:14px;"><i class="fas fa-history"></i> STORICO</div>
 </header>
 
 <div class="dashboard-top">
     <div class="meteo-panel">
-        <div id="loc-name" style="font-size: 11px; font-weight: 800; color: #6b705c;">RICERCA POSIZIONE...</div>
-        <div id="meteo-icon" style="font-size: 38px; margin: 5px 0;"></div>
-        <div id="temp-val" style="font-size: 36px; font-weight: 900; color: var(--header);">--°</div>
+        <div id="loc-name" style="font-size: 11px; font-weight: 900; color: #6b705c;">LOCALIZZAZIONE...</div>
+        <div id="meteo-icon" style="font-size: 40px; margin: 8px 0;"></div>
+        <div id="temp-val" style="font-size: 38px; font-weight: 900; color: var(--header);">--°</div>
     </div>
     <div class="summary-panel">
-        <span class="info-label" style="margin-left:0">ULTIMA VISITA</span>
-        <div id="last-data" style="font-weight:900; font-size:14px; margin-bottom:8px;">--/--/--</div>
-        <span class="info-label" style="margin-left:0">ULTIMA FORZA</span>
-        <div id="last-forza" style="font-weight:900; font-size:14px; color:var(--accent);">---</div>
+        <span class="info-label">Ultima Visita</span>
+        <div id="last-data" style="font-weight:900; font-size:15px; margin-bottom:10px;">--/--/--</div>
+        <span class="info-label">Ultima Forza</span>
+        <div id="last-forza" style="font-weight:900; font-size:15px; color:var(--accent);">---</div>
     </div>
 </div>
 
 <div class="container">
-    <button class="export-btn" onclick="exportSingleVisit()"><i class="fas fa-file-export"></i> ESPORTA QUESTA VISITA</button>
+    <button class="export-btn" onclick="exportSingle()"><i class="fas fa-file-export"></i> ESPORTA REPORT VISITA</button>
 
     <div class="section">
         <h2><i class="fas fa-users"></i> Stato Famiglia</h2>
         <div class="grid" id="forza-selector">
-            <div class="btn-check" onclick="selectOne(this)">FORTE</div>
-            <div class="btn-check" onclick="selectOne(this)">MEDIA</div>
-            <div class="btn-check" onclick="selectOne(this)">SCARSA</div>
+            <div class="btn-check" data-val="FORTE" onclick="selectOne(this)">FORTE</div>
+            <div class="btn-check" data-val="MEDIA" onclick="selectOne(this)">MEDIA</div>
+            <div class="btn-check" data-val="SCARSA" onclick="selectOne(this)">SCARSA</div>
         </div>
         <div class="grid">
-            <div class="btn-check" id="cov-op" onclick="selectMulti(this)">COV. OPERCOLATA</div>
-            <div class="btn-check" id="cov-fr" onclick="selectMulti(this)">COV. FRESCA</div>
-            <div class="btn-check" id="scorte" onclick="selectMulti(this)">SCORTE</div>
-            <div class="btn-check" id="polline" onclick="selectMulti(this)">POLLINE</div>
+            <div class="btn-check multi" data-val="COVATA OPERCOLATA" onclick="toggleMulti(this)">COV. OPERCOLATA</div>
+            <div class="btn-check multi" data-val="COVATA FRESCA" onclick="toggleMulti(this)">COV. FRESCA</div>
+            <div class="btn-check multi" data-val="SCORTE" onclick="toggleMulti(this)">SCORTE</div>
         </div>
     </div>
 
     <div class="section">
         <h2><i class="fas fa-crown"></i> Regina</h2>
-        <span class="info-label">ANNO DI NASCITA</span>
-        <input type="number" id="reg-anno" placeholder="Esempio: 2026" oninput="updateReginaUI(this.value)">
+        <span class="info-label">Anno di Nascita</span>
+        <input type="number" id="reg-anno" placeholder="Es: 2026" oninput="updateReginaUI(this.value)">
         <div id="reg-colore-visual">COLORE REGINA</div>
         <div class="grid">
             <div class="btn-check" id="q-v" onclick="selectExclude(this, 'q-nv')">VISTA</div>
             <div class="btn-check" id="q-nv" onclick="selectExclude(this, 'q-v')">NON VISTA</div>
             <div class="btn-check" id="q-m" onclick="selectExclude(this, 'q-nm')">MARCATA</div>
             <div class="btn-check" id="q-nm" onclick="selectExclude(this, 'q-m')">NON MARCATA</div>
-            <div class="btn-check danger" id="q-fuc" onclick="selectExclude(this, 'q-fig')">FUCAIOLA</div>
-            <div class="btn-check danger" id="q-fig" onclick="selectExclude(this, 'q-fuc')">FIGLIATRICE</div>
         </div>
     </div>
 
     <div class="section">
         <h2><i class="fas fa-biohazard"></i> Sciamatura</h2>
         <div class="grid" style="grid-template-columns: 2fr 1fr;">
-            <div class="btn-check danger" id="presenza-celle" onclick="selectMulti(this)">CELLE REALI</div>
+            <div class="btn-check danger multi" id="presenza-celle" data-val="CELLE" onclick="toggleMulti(this)">CELLE REALI</div>
             <input type="number" id="num-celle" placeholder="Quantità">
         </div>
     </div>
@@ -114,68 +110,63 @@
     <div class="section">
         <h2><i class="fas fa-lock"></i> Blocco Covata</h2>
         <div id="blocco-alarm" class="alarm-badge">⚠️ LIBERARE REGINA TRA: <span id="days-to-go">--</span> GIORNI</div>
-        <span class="info-label">DATA INIZIO INGAGBIAMENTO</span>
+        <span class="info-label">Data Inizio Inggabbiamento</span>
         <input type="date" id="blocco-inizio" onchange="calculateBlocco()">
-    </div>
-
-    <div class="section">
-        <h2><i class="fas fa-archive"></i> Melari</h2>
-        <div class="grid">
-            <select id="stato-melari">
-                <option value="">STATO...</option>
-                <option>VUOTI</option>
-                <option>IN LAVORAZIONE</option>
-                <option>PIENI / DA SMELARE</option>
-            </select>
-            <input type="number" id="num-melari" placeholder="N. Melari">
-        </div>
     </div>
 
     <div class="section">
         <h2><i class="fas fa-tools"></i> Operazioni Effettuate</h2>
         <div class="grid">
-            <div class="btn-check" id="form-nuc" onclick="selectMulti(this)">FORM. NUCLEO</div>
-            <div class="btn-check" id="paregg" onclick="selectMulti(this)">PAREGGIATURA</div>
-            <div class="btn-check" id="apiscampo" onclick="selectMulti(this)">APISCAMPO</div>
-            <div class="btn-check" id="nutr" onclick="selectMulti(this)">NUTRIZIONE</div>
-            <div class="btn-check" id="messo-mel" onclick="selectMulti(this)">MESSO MELARIO</div>
+            <div class="btn-check multi op-btn" data-val="FORM. NUCLEO" onclick="toggleMulti(this)">FORM. NUCLEO</div>
+            <div class="btn-check multi op-btn" data-val="PAREGGIATURA" onclick="toggleMulti(this)">PAREGGIATURA</div>
+            <div class="btn-check multi op-btn" data-val="MESSO MELARIO" onclick="toggleMulti(this)">MESSO MELARIO</div>
+            <div class="btn-check multi op-btn" data-val="NUTRIZIONE" onclick="toggleMulti(this)">NUTRIZIONE</div>
+            <div class="btn-check multi op-btn" data-val="APISCAMPO" onclick="toggleMulti(this)">APISCAMPO</div>
         </div>
-        <span class="info-label">FOGLI CEREI AGGIUNTI</span>
+        <span class="info-label">Fogli Cerei Aggiunti</span>
         <input type="number" id="fogli-n" placeholder="Numero fogli">
     </div>
 
     <div class="section">
         <h2><i class="fas fa-medkit"></i> Trattamenti Sanitari</h2>
-        <div id="tratt-alarm" class="alarm-badge">⚠️ TRATTAMENTO IN CORSO: RIMUOVERE TRA <span id="tratt-days">--</span> GG</div>
+        <div id="tratt-alarm" class="alarm-badge">⚠️ TRATTAMENTO: RIMUOVERE TRA <span id="tratt-days">--</span> GG</div>
+        <span class="info-label">Farmaco</span>
         <select id="tratt-tipo" onchange="calculateTrattamento()">
-            <option value="" data-days="0">Seleziona...</option>
-            <option value="Apivar" data-days="42">Apivar (6 settimane)</option>
-            <option value="Apistan" data-days="42">Apistan (6 settimane)</option>
-            <option value="Apiguard" data-days="28">Apiguard (4 settimane)</option>
-            <option value="Oxybee" data-days="1">Oxybee</option>
-            <option value="Formico" data-days="7">Acido Formico</option>
+            <option value="" data-days="0">Nessuno...</option>
+            <option value="Apivar" data-days="42">Apivar (42gg)</option>
+            <option value="Apistan" data-days="42">Apistan (42gg)</option>
+            <option value="Apiguard" data-days="28">Apiguard (28gg)</option>
+            <option value="Formico" data-days="7">Acido Formico (7gg)</option>
         </select>
-        <span class="info-label">DATA SOMMINISTRAZIONE</span>
+        <span class="info-label">Data Somministrazione</span>
         <input type="date" id="tratt-data" onchange="calculateTrattamento()">
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-microphone-alt"></i> Note & Multimedia</h2>
+        <h2><i class="fas fa-microphone-alt"></i> Media & Note</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-camera"></i> FOTO<input type="file" accept="image/*" capture="camera" style="display:none"></label>
+            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-microphone"></i> AUDIO<input type="file" accept="audio/*" capture style="display:none"></label>
+        </div>
         <textarea id="note-finali" rows="4" placeholder="Annotazioni libere..."></textarea>
     </div>
 
     <button class="btn-save" onclick="saveAll()">SALVA VISITA</button>
 </div>
 
+<div class="footer-minimal">
+    <a href="https://linktr.ee/minimalstudio" target="_blank">MINIMAL STUDIO — DIGITAL SOLUTIONS</a>
+</div>
+
 <div id="stats-overlay">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--bg); padding-bottom:15px; margin-bottom:15px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--bg); padding-bottom:15px; margin-bottom:20px;">
         <h2 style="margin:0; border:none;"><i class="fas fa-history"></i> STORICO BeeTag</h2>
-        <button onclick="document.getElementById('stats-overlay').style.display='none'" style="background:#4a443f; color:white; border:none; padding:10px; border-radius:12px;">X</button>
+        <button onclick="document.getElementById('stats-overlay').style.display='none'" style="background:var(--danger); color:white; border:none; padding:12px 25px; border-radius:12px; font-weight:bold;">CHIUDI</button>
     </div>
     
-    <div style="display:flex; gap:10px; margin-bottom:20px;">
-        <button class="export-btn" onclick="exportFullHistory()" style="margin-bottom:0;"><i class="fas fa-download"></i> CSV STORICO</button>
-        <button class="danger-btn" onclick="clearHistory()" style="padding: 8px 15px; font-size: 11px;"><i class="fas fa-trash"></i> CANCELLA TUTTO</button>
+    <div style="display:flex; gap:12px; margin-bottom:25px;">
+        <button class="export-btn" onclick="exportCSV()"><i class="fas fa-file-csv"></i> CSV STORICO</button>
+        <button class="export-btn" style="background:var(--danger);" onclick="clearHistory()"><i class="fas fa-trash"></i> CANCELLA TUTTO</button>
     </div>
 
     <div id="stats-list"></div>
@@ -184,12 +175,13 @@
 <script>
     const arniaId = new URLSearchParams(window.location.search).get('a') || "1";
 
-    function selectOne(el) { 
-        el.parentElement.querySelectorAll('.btn-check').forEach(b => b.classList.remove('active')); 
-        el.classList.add('active'); 
+    // --- INTERFACCIA ---
+    function selectOne(el) {
+        el.parentElement.querySelectorAll('.btn-check').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
     }
     
-    function selectMulti(el) { el.classList.toggle('active'); }
+    function toggleMulti(el) { el.classList.toggle('active'); }
     
     function selectExclude(el, targetId) { 
         el.classList.toggle('active'); 
@@ -198,119 +190,121 @@
 
     function updateReginaUI(anno) {
         const box = document.getElementById('reg-colore-visual');
-        const colori = { "4":"#2ecc71", "9":"#2ecc71", "0":"#3498db", "5":"#3498db", "1":"#ffffff", "6":"#ffffff", "2":"#f1c40f", "7":"#f1c40f", "3":"#e74c3c", "8":"#e74c3c" };
-        const nomi = { "4":"VERDE", "9":"VERDE", "0":"BLU", "5":"BLU", "1":"BIANCO", "6":"BIANCO", "2":"GIALLO", "7":"GIALLO", "3":"ROSSO", "8":"ROSSO" };
-        const lastDigit = anno.toString().slice(-1);
-        if(colori[lastDigit]) {
-            box.style.background = colori[lastDigit];
-            box.innerText = nomi[lastDigit];
-            box.style.color = (lastDigit=="1" || lastDigit=="6") ? "#000" : "#fff";
+        const last = anno.toString().slice(-1);
+        const map = {"4":"#2ecc71","9":"#2ecc71","0":"#3498db","5":"#3498db","1":"#ffffff","6":"#ffffff","2":"#f1c40f","7":"#f1c40f","3":"#e74c3c","8":"#e74c3c"};
+        const nomi = {"4":"VERDE","9":"VERDE","0":"BLU","5":"BLU","1":"BIANCO","6":"BIANCO","2":"GIALLO","7":"GIALLO","3":"ROSSO","8":"ROSSO"};
+        if(map[last]) {
+            box.style.background = map[last];
+            box.innerText = nomi[last];
+            box.style.color = (last=="1"||last=="6") ? "#000" : "#fff";
+            box.style.borderColor = "#4a443f";
         } else {
             box.style.background = "#eee"; box.innerText = "COLORE REGINA"; box.style.color = "#888";
         }
     }
 
+    // --- CALCOLI ---
     function calculateBlocco() {
-        const inizio = new Date(document.getElementById('blocco-inizio').value);
-        if(isNaN(inizio)) return;
-        const fine = new Date(inizio); fine.setDate(fine.getDate() + 21);
+        const d = new Date(document.getElementById('blocco-inizio').value);
+        if(isNaN(d)) return;
+        const fine = new Date(d); fine.setDate(fine.getDate() + 21);
         const diff = Math.ceil((fine - new Date()) / 86400000);
-        const badge = document.getElementById('blocco-alarm');
-        if(diff > 0) { badge.style.display = 'block'; document.getElementById('days-to-go').innerText = diff; }
-        else { badge.style.display = 'none'; }
+        document.getElementById('blocco-alarm').style.display = diff > 0 ? 'block' : 'none';
+        document.getElementById('days-to-go').innerText = diff;
     }
 
     function calculateTrattamento() {
         const tipo = document.getElementById('tratt-tipo');
         const giorni = tipo.options[tipo.selectedIndex].getAttribute('data-days');
-        const inizio = new Date(document.getElementById('tratt-data').value);
-        if(!giorni || giorni == "0" || isNaN(inizio)) return;
-        const fine = new Date(inizio); fine.setDate(fine.getDate() + parseInt(giorni));
+        const data = new Date(document.getElementById('tratt-data').value);
+        if(!giorni || giorni == "0" || isNaN(data)) return;
+        const fine = new Date(data); fine.setDate(fine.getDate() + parseInt(giorni));
         const diff = Math.ceil((fine - new Date()) / 86400000);
-        const badge = document.getElementById('tratt-alarm');
-        if(diff > 0) { badge.style.display = 'block'; document.getElementById('tratt-days').innerText = diff; }
-        else { badge.style.display = 'none'; }
+        document.getElementById('tratt-alarm').style.display = diff > 0 ? 'block' : 'none';
+        document.getElementById('tratt-days').innerText = diff;
     }
 
+    // --- DATABASE ---
     function saveAll() {
-        const forzaAttiva = document.querySelector('#forza-selector .active')?.innerText || "ND";
-        const dataVisita = {
+        const forzaNode = document.querySelector('#forza-selector .active');
+        const forza = forzaNode ? forzaNode.getAttribute('data-val') : "NON RILEVATA";
+        
+        const ops = Array.from(document.querySelectorAll('.op-btn.active'))
+                    .map(b => b.getAttribute('data-val')).join(', ');
+
+        const visita = {
             id: arniaId,
             data: new Date().toLocaleDateString('it-IT'),
-            forza: forzaAttiva,
-            note: document.getElementById('note-finali').value || "Nessuna nota",
-            sciamatura: document.getElementById('presenza-celle').classList.contains('active') ? "CELLE" : "OK",
-            trattamento: document.getElementById('tratt-tipo').value || "Nessuno"
+            forza: forza,
+            celle: document.getElementById('presenza-celle').classList.contains('active') ? "SI ("+document.getElementById('num-celle').value+")" : "NO",
+            note: document.getElementById('note-finali').value || "-",
+            operazioni: ops || "Nessuna"
         };
+
+        let db = JSON.parse(localStorage.getItem('beetag_v3_db')) || [];
+        db.unshift(visita);
+        localStorage.setItem('beetag_v3_db', JSON.stringify(db.slice(0, 500)));
+        localStorage.setItem('beetag_last_visita_' + arniaId, JSON.stringify(visita));
         
-        let db = JSON.parse(localStorage.getItem('beetag_db')) || [];
-        db.unshift(dataVisita);
-        localStorage.setItem('beetag_db', JSON.stringify(db.slice(0, 500)));
-        localStorage.setItem('beetag_last_' + arniaId, JSON.stringify(dataVisita));
-        
-        alert("✅ Visita Arnia " + arniaId + " salvata!");
+        alert("✅ Visita Arnia " + arniaId + " salvata correttamente!");
         location.reload();
     }
 
     function showStats() {
         document.getElementById('stats-overlay').style.display = 'block';
-        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
-        document.getElementById('stats-list').innerHTML = db.length > 0 ? db.map(r => `
-            <div style="background:#fff; border:2px solid #eee; border-radius:15px; padding:15px; margin-bottom:12px; border-left:6px solid ${r.sciamatura == 'OK' ? '#6b705c' : '#9e2a2b'}">
-                <strong>ARNIA ${r.id}</strong> - ${r.data}<br>
-                <small>FORZA: ${r.forza} | CELLE: ${r.sciamatura} | TRATT: ${r.trattamento}</small><br>
-                <i style="font-size:11px; color:#666;">"${r.note}"</i>
+        const db = JSON.parse(localStorage.getItem('beetag_v3_db')) || [];
+        document.getElementById('stats-list').innerHTML = db.length > 0 ? db.map(h => `
+            <div style="background:#fff; padding:18px; border-radius:20px; margin-bottom:15px; border-left:8px solid #d4a373; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <strong>ARNIA ${h.id}</strong> <span style="font-size:12px; color:#888;">${h.data}</span>
+                </div>
+                <div style="font-size:13px;"><strong>FORZA:</strong> ${h.forza} | <strong>CELLE:</strong> ${h.celle}</div>
+                <div style="font-size:13px; margin-top:5px;"><strong>OP:</strong> ${h.operazioni}</div>
+                <div style="font-size:12px; color:#666; font-style:italic; margin-top:8px; border-top:1px solid #eee; padding-top:8px;">"${h.note}"</div>
             </div>
-        `).join('') : "<p style='text-align:center;'>Nessun dato.</p>";
+        `).join('') : "<p style='text-align:center; color:#888;'>Nessun dato presente.</p>";
     }
 
     function clearHistory() {
-        if(confirm("Sei sicuro di voler CANCELLARE TUTTO lo storico? Questa azione è irreversibile (utile per nuove famiglie).")) {
-            localStorage.removeItem('beetag_db');
-            localStorage.removeItem('beetag_last_' + arniaId);
-            alert("Storico resettato."); location.reload();
+        if(confirm("Sei sicuro di voler CANCELLARE TUTTO lo storico? Utile se la famiglia è morta o l'arnia è stata resettata.")) {
+            localStorage.clear(); location.reload();
         }
     }
 
-    function exportFullHistory() {
-        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
+    function exportCSV() {
+        const db = JSON.parse(localStorage.getItem('beetag_v3_db')) || [];
         if(db.length === 0) return alert("Nessun dato da esportare.");
-        let csv = "ID_ARNIA,DATA,FORZA,SCIAMATURA,TRATTAMENTO,NOTE\n";
-        db.forEach(r => { csv += `${r.id},${r.data},${r.forza},${r.sciamatura},${r.trattamento},${r.note.replace(/,/g, ';')}\n`; });
-        downloadFile(csv, "BeeTag_Storico_Completo.csv");
+        let csv = "ID_ARNIA,DATA,FORZA,CELLE,OPERAZIONI,NOTE\n";
+        db.forEach(h => { csv += `${h.id},${h.data},${h.forza},${h.celle},${h.operazioni},${h.note.replace(/,/g, ';')}\n`; });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'BeeTag_Storico_Completo.csv'; a.click();
     }
 
-    function exportSingleVisit() {
-        const forza = document.querySelector('#forza-selector .active')?.innerText || "ND";
-        const note = document.getElementById('note-finali').value || "";
-        const data = new Date().toLocaleDateString();
-        let content = `BeeTag - Report Visita Arnia ${arniaId}\nData: ${data}\nForza: ${forza}\nCelle: ${document.getElementById('presenza-celle').classList.contains('active') ? 'SI' : 'NO'}\nNote: ${note}`;
-        downloadFile(content, `BeeTag_Arnia${arniaId}_Visita_${data.replace(/\//g, '-')}.txt`);
-    }
-
-    function downloadFile(content, fileName) {
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = fileName; a.click();
+    function exportSingle() {
+        const f = document.querySelector('#forza-selector .active')?.innerText || "ND";
+        const n = document.getElementById('note-finali').value || "";
+        const txt = `BEE TAG REPORT\nArnia: ${arniaId}\nData: ${new Date().toLocaleDateString()}\nForza: ${f}\nNote: ${n}`;
+        const blob = new Blob([txt], { type: 'text/plain' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Report_Arnia${arniaId}.txt`; a.click();
     }
 
     window.onload = () => {
-        const last = JSON.parse(localStorage.getItem('beetag_last_' + arniaId));
+        const last = JSON.parse(localStorage.getItem('beetag_last_visita_' + arniaId));
         if(last) {
             document.getElementById('last-data').innerText = last.data;
             document.getElementById('last-forza').innerText = last.forza;
-            document.getElementById('last-forza').style.color = (last.forza === 'FORTE') ? 'var(--ok)' : 'var(--accent)';
         }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
-                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=it`)
-                .then(r => r.json()).then(d => document.getElementById('loc-name').innerText = d.city || d.locality);
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`)
+                const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+                fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=it`)
+                .then(r => r.json()).then(d => document.getElementById('loc-name').innerText = (d.city || d.locality || "APIARIO").toUpperCase());
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
                 .then(r => r.json()).then(m => {
                     document.getElementById('temp-val').innerText = Math.round(m.current_weather.temperature) + "°";
-                    document.getElementById('meteo-icon').innerText = m.current_weather.weathercode < 3 ? '☀️' : '☁️';
+                    document.getElementById('meteo-icon').innerText = m.current_weather.weathercode < 3 ? '☀️' : (m.current_weather.weathercode < 50 ? '☁️' : '🌧️');
                 });
-            });
+            }, () => { document.getElementById('loc-name').innerText = "GPS OFF"; });
         }
     };
 </script>
