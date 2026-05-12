@@ -3,162 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BEETAG</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>BEETAG PRO - Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #bcaf9f; --card: #fdfcfb; --text: #4a443f; --accent: #d4a373; --ok: #6b705c; --danger: #9e2a2b; --header: #2c2a28; }
-        body { font-family: sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 110px; }
-        header { background: var(--header); color: #fff; padding: 15px; text-align: center; font-weight: 800; font-size: 20px; letter-spacing: 2px; position: sticky; top: 0; z-index: 100; }
-        .container { padding: 12px; max-width: 600px; margin: auto; }
+        :root { --bg: #e9ecef; --card: #ffffff; --text: #2d3436; --accent: #fab1a0; --primary: #fdcb6e; --danger: #d63031; --ok: #00b894; --header: #2d3436; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 120px; }
+        
+        header { background: var(--header); color: #fff; padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; }
 
-        /* BOX METEO CON ICONE E GRADI GRANDI */
-        .meteo-box { background: #fff; border-radius: 15px; padding: 25px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 10px solid var(--accent); }
-        .meteo-temp { font-size: 48px; font-weight: 900; color: var(--header); }
-        .meteo-icon { font-size: 55px; color: #f39c12; }
+        /* PANNELLO METEO E RIASSUNTO */
+        .dashboard-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px; }
+        .meteo-panel { background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; border: 1px solid #dfe6e9; overflow: hidden; }
+        .big-temp { font-size: 40px; font-weight: 900; display: block; }
+        .meteo-loc { font-size: 12px; font-weight: 800; text-transform: uppercase; opacity: 0.9; }
 
-        /* MESSAGGIO IN ROSSO PER PROSSIMA VISITA */
-        #alert-box { display: none; background: var(--danger); color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center; font-weight: 900; font-size: 18px; border: 4px solid #fff; animation: blink 1s infinite; }
-        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.7;} 100% {opacity: 1;} }
+        .container { padding: 0 15px; }
+        .section { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #636e72; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
 
-        .section { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        h2 { font-size: 12px; text-transform: uppercase; color: #8a817c; border-bottom: 1px solid #f0edea; padding-bottom: 8px; margin-top: 0; margin-bottom: 15px; }
+        /* INPUT E GRIGLIE */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .btn-check { min-height: 55px; background: #f1f2f6; border: 2px solid #dfe4ea; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; padding: 4px; }
+        .btn-check.active { background: var(--primary); border-color: #f39c12; color: #2d3436; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-check.danger.active { background: var(--danger); border-color: #c0392b; color: white; }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .btn-opt { min-height: 65px; display: flex; align-items: center; justify-content: center; border: 2px solid #e0d9d1; border-radius: 12px; text-align: center; font-size: 12px; cursor: pointer; font-weight: 800; background: #fff; text-transform: uppercase; }
-        .btn-opt.active { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; }
-        .btn-opt.alert.active { background: var(--danger) !important; border-color: var(--danger) !important; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; font-weight: 800; margin-bottom: 5px; color: #b2bec3; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid #dfe6e9; border-radius: 12px; font-size: 16px; box-sizing: border-box; font-weight: 600; }
+        
+        /* ALLARMI */
+        .alarm-badge { background: var(--danger); color: white; padding: 10px; border-radius: 10px; font-weight: 900; font-size: 12px; margin-bottom: 10px; display: none; text-align: center; }
 
-        input, select, textarea { width: 100%; padding: 18px; border: 2px solid #e0d9d1; border-radius: 12px; margin-bottom: 12px; font-size: 16px; font-weight: 700; box-sizing: border-box; }
-        .btn-save { position: fixed; bottom: 15px; left: 15px; right: 15px; padding: 22px; border: none; border-radius: 18px; font-weight: 900; background: var(--ok); color: #fff; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 999; }
+        /* MEDIA */
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .media-btn { background: #636e72; color: white; padding: 15px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: bold; }
+
+        .btn-save { position: fixed; bottom: 15px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 22px; border: none; border-radius: 18px; font-size: 18px; font-weight: 900; box-shadow: 0 10px 25px rgba(0, 184, 148, 0.4); z-index: 1000; }
+        
+        #overlay-stats { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
     </style>
 </head>
 <body>
 
-<header>TAG ARNIA <span id="view-id">?</span></header>
+<header>
+    <div class="top-bar">
+        <div style="font-weight: 900;">BEETAG PRO</div>
+        <div onclick="toggleStats()"><i class="fas fa-chart-line"></i> STATS</div>
+    </div>
+</header>
+
+<div class="dashboard-top">
+    <div class="meteo-panel">
+        <div class="meteo-loc" id="loc-name">Avezzano</div>
+        <div id="meteo-icon" style="font-size: 45px; margin: 5px 0;"><i class="fas fa-sun"></i></div>
+        <span class="big-temp" id="temp-val">--°</span>
+    </div>
+    <div class="summary-panel" id="mini-riassunto">
+        <strong>ULTIMA VISITA:</strong><br>
+        <span id="last-data">Nessuna</span><br>
+        <strong>FORZA:</strong> <span id="last-forza">-</span><br>
+        <strong>REGINA:</strong> <span id="last-regina">-</span><br>
+        <strong>ALLARMI:</strong> <span id="last-alarms">Nessuno</span>
+    </div>
+</div>
 
 <div class="container">
-    <div class="meteo-box">
-        <div id="meteo-icon-div" class="meteo-icon"><i class="fas fa-sun"></i></div>
-        <div id="meteo-temp" class="meteo-temp">--°C</div>
-    </div>
-
-    <div id="alert-box"><i class="fas fa-exclamation-triangle"></i> ATTENZIONE: <span id="alert-msg"></span></div>
-
     <div class="section">
-        <h2>Forza e Covata</h2>
-        <div class="grid" id="forza-group">
-            <div class="btn-opt" onclick="selectOne(this)">FORTE</div>
-            <div class="btn-opt" onclick="selectOne(this)">MEDIA</div>
-            <div class="btn-opt" onclick="selectOne(this)">DEBOLE</div>
+        <h2><i class="fas fa-users"></i> Stato Famiglia</h2>
+        <div class="grid" id="forza-selector">
+            <div class="btn-check" onclick="selectOne(this, 'forza')">FORTE</div>
+            <div class="btn-check" onclick="selectOne(this, 'forza')">MEDIA</div>
+            <div class="btn-check" onclick="selectOne(this, 'forza')">SCARSA</div>
         </div>
         <div class="grid">
-            <div class="btn-opt" onclick="selectMulti(this)">COV. FRESCA</div>
-            <div class="btn-opt" onclick="selectMulti(this)">COV. OPERCOLATA</div>
-            <div class="btn-opt" onclick="selectMulti(this)">SCORTE</div>
+            <div class="btn-check" onclick="selectMulti(this)">COV. OPERCOLATA</div>
+            <div class="btn-check" onclick="selectMulti(this)">COV. FRESCA</div>
+            <div class="btn-check" onclick="selectMulti(this)">SCORTE</div>
+            <div class="btn-check" onclick="selectMulti(this)">POLLINE</div>
         </div>
-        <input type="number" id="favi" placeholder="N° Telaini Covata">
     </div>
 
     <div class="section">
-        <h2>Regina e Sciamatura</h2>
+        <h2><i class="fas fa-crown"></i> Regina</h2>
         <div class="grid">
-            <div class="btn-opt" onclick="selectMulti(this)">VISTA</div>
-            <div class="btn-opt" onclick="selectMulti(this)">MARCATA</div>
-            <div class="btn-opt alert" id="btn-celle" onclick="selectMulti(this)">CELLE REALI</div>
+            <input type="number" id="regina-anno" placeholder="Anno">
+            <select id="regina-colore">
+                <option value="">Colore</option>
+                <option value="Verde">Verde</option>
+                <option value="Blu">Blu</option>
+                <option value="Bianco">Bianco</option>
+                <option value="Giallo">Giallo</option>
+                <option value="Rosso">Rosso</option>
+            </select>
         </div>
-        <select id="regina-colore">
-            <option value="">Colore Regina...</option>
-            <option value="Verde">Verde (2024)</option>
-            <option value="Blu">Blu (2025)</option>
-            <option value="Bianco">Bianco (2026)</option>
-            <option value="Giallo">Giallo (2027)</option>
-            <option value="Rosso">Rosso (2028)</option>
+        <div class="grid">
+            <div class="btn-check" onclick="selectMulti(this)">VISTA</div>
+            <div class="btn-check" onclick="selectMulti(this)">NON VISTA</div>
+            <div class="btn-check" onclick="selectMulti(this)">MARCATA</div>
+            <div class="btn-check" onclick="selectMulti(this)">NON MARCATA</div>
+            <div class="btn-check danger" onclick="selectMulti(this)">FUCAIOLA</div>
+            <div class="btn-check danger" onclick="selectMulti(this)">APE FIGLIATRICE</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-biohazard"></i> Sciamatura</h2>
+        <div class="grid">
+            <div class="btn-check danger" id="presenza-celle" onclick="selectMulti(this)">PRESENZA CELLE</div>
+            <input type="number" id="num-celle" placeholder="Numero celle">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-lock"></i> Blocco Covata</h2>
+        <div id="blocco-alarm" class="alarm-badge">SBLOCCO TRA: <span id="days-to-go">--</span> GIORNI</div>
+        <div class="input-group">
+            <label>Inizio Blocco</label>
+            <input type="date" id="blocco-inizio" onchange="calcBlocco()">
+        </div>
+        <div class="input-group">
+            <label>Fine Prevista (21gg)</label>
+            <input type="date" id="blocco-fine" readonly>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-archive"></i> Produzione Melari</h2>
+        <div class="grid">
+            <select id="stato-melari">
+                <option value="">Stato...</option>
+                <option value="Vuoti">Vuoti</option>
+                <option value="In lavorazione">In lavorazione</option>
+                <option value="Pieni">Pieni</option>
+            </select>
+            <input type="number" id="num-melari" placeholder="N. Melari">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-tools"></i> Operazioni Effettuate</h2>
+        <div class="grid">
+            <div class="btn-check" onclick="selectMulti(this)">FORMAZIONE NUCLEO</div>
+            <div class="btn-check" onclick="selectMulti(this)">PAREGGIATURA</div>
+            <div class="btn-check" onclick="selectMulti(this)">APISCAMPO</div>
+            <div class="btn-check" onclick="selectMulti(this)">NUTRIZIONE</div>
+            <div class="btn-check" onclick="selectMulti(this)">MESSO MELARIO</div>
+        </div>
+        <div class="input-group">
+            <label>Aggiunta Fogli Cerei (Quantità)</label>
+            <input type="number" id="fogli-cerei-n" placeholder="N. Fogli">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-medkit"></i> Trattamenti</h2>
+        <select id="trattamento-tipo">
+            <option value="">Seleziona medicinale...</option>
+            <option value="Apivar">Apivar (6 settimane)</option>
+            <option value="Apiguard">Apiguard (4 settimane)</option>
+            <option value="Ossalico">Acido Ossalico (Immediato)</option>
+            <option value="Formico">Acido Formico (7 giorni)</option>
         </select>
-    </div>
-
-    <div class="section">
-        <h2>Tecnica e Blocco</h2>
-        <div class="grid">
-            <div class="btn-opt" onclick="selectMulti(this)">FOGLI CEREI</div>
-            <div class="btn-opt" onclick="selectMulti(this)">NUTRIZIONE</div>
-            <div class="btn-opt" id="btn-blocco" onclick="selectMulti(this)">BLOCCO COVATA</div>
-        </div>
-        <select id="farmaco">
-            <option value="Nessuno">Nessun Trattamento</option>
-            <option value="Apivar">Apivar</option>
-            <option value="Timolo">Timolo</option>
-            <option value="Ossalico">Ossalico</option>
-            <option value="Formico">Formico</option>
-        </select>
-    </div>
-
-    <div class="section">
-        <h2>Produzione Melari</h2>
-        <input type="number" id="n_melari" placeholder="N° Melari">
-        <div class="grid" id="melari-stato">
-            <div class="btn-opt" onclick="selectOne(this)">VUOTI</div>
-            <div class="btn-opt" onclick="selectOne(this)">IN LAVORO</div>
-            <div class="btn-opt" onclick="selectOne(this)">PIENI</div>
+        <div class="input-group" style="margin-top:10px;">
+            <label>Data Somministrazione</label>
+            <input type="date" id="trattamento-data">
         </div>
     </div>
 
-    <textarea id="note-text" placeholder="Note visita..."></textarea>
-    <button class="btn-save" onclick="saveAll()">SALVA VISITA</button>
+    <div class="section">
+        <h2><i class="fas fa-camera"></i> Media e Note</h2>
+        <div class="media-grid">
+            <label class="media-btn"><i class="fas fa-image"></i> FOTO<input type="file" accept="image/*" capture="camera" style="display:none"></label>
+            <label class="media-btn"><i class="fas fa-video"></i> VIDEO<input type="file" accept="video/*" capture="camcorder" style="display:none"></label>
+        </div>
+        <textarea id="note-finali" rows="4" style="margin-top:15px;" placeholder="Scrivi qui le tue note finali..."></textarea>
+    </div>
+
+    <button class="btn-save" onclick="saveData()">SALVA TUTTO</button>
+</div>
+
+<div id="overlay-stats">
+    <div style="display:flex; justify-content: space-between; align-items:center;">
+        <h1 style="margin:0;">Statistiche Apiario</h1>
+        <button onclick="toggleStats()" style="padding:10px; background:var(--danger); color:white; border:none; border-radius:10px;">CHIUDI</button>
+    </div>
+    <hr>
+    <div id="stats-content"></div>
 </div>
 
 <script>
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('a') || "0";
-    document.getElementById('view-id').innerText = id;
-
+    const arniaId = params.get('a') || "1";
+    
     window.onload = () => {
-        const h = JSON.parse(localStorage.getItem('beetag_' + id));
-        if(h) {
-            if(h.celle || h.blocco || h.forza === "DEBOLE") {
-                document.getElementById('alert-box').style.display = 'block';
-                let m = [];
-                if(h.celle) m.push("CELLE REALI");
-                if(h.blocco) m.push("BLOCCO ATTIVO");
-                if(h.forza === "DEBOLE") m.push("FAMIGLIA DEBOLE");
-                document.getElementById('alert-msg').innerText = m.join(" / ");
-            }
-        }
         caricaMeteo();
+        renderRiassunto();
     };
 
-    async function caricaMeteo() {
+    function caricaMeteo() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`);
                 const data = await res.json();
-                const temp = Math.round(data.current_weather.temperature);
+                document.getElementById('temp-val').innerText = Math.round(data.current_weather.temperature) + "°";
                 const code = data.current_weather.weathercode;
-                document.getElementById('meteo-temp').innerText = temp + "°C";
-                
                 let icon = '<i class="fas fa-sun"></i>';
                 if(code > 3) icon = '<i class="fas fa-cloud"></i>';
-                if(code > 50) icon = '<i class="fas fa-cloud-rain"></i>';
-                document.getElementById('meteo-icon-div').innerHTML = icon;
+                if(code > 50) icon = '<i class="fas fa-cloud-showers-heavy"></i>';
+                document.getElementById('meteo-icon').innerHTML = icon;
             });
         }
     }
 
-    function selectOne(el) {
-        el.parentElement.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
+    function calcBlocco() {
+        const inizio = new Date(document.getElementById('blocco-inizio').value);
+        if(!isNaN(inizio)) {
+            const fine = new Date(inizio);
+            fine.setDate(fine.getDate() + 21);
+            document.getElementById('blocco-fine').valueAsDate = fine;
+            
+            const oggi = new Date();
+            const diff = Math.ceil((fine - oggi) / (1000 * 60 * 60 * 24));
+            if(diff > 0) {
+                document.getElementById('blocco-alarm').style.display = 'block';
+                document.getElementById('days-to-go').innerText = diff;
+            }
+        }
+    }
+
+    function selectOne(el, group) {
+        el.parentElement.querySelectorAll('.btn-check').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
     }
-    function selectMulti(el) { el.classList.toggle('active'); }
 
-    function saveAll() {
-        const d = {
-            forza: document.querySelector('#forza-group .active')?.innerText || "ND",
-            note: document.getElementById('note-text').value,
-            celle: document.getElementById('btn-celle').classList.contains('active'),
-            blocco: document.getElementById('btn-blocco').classList.contains('active')
+    function selectMulti(el) {
+        el.classList.toggle('active');
+    }
+
+    function saveData() {
+        const activeButtons = Array.from(document.querySelectorAll('.btn-check.active')).map(b => b.innerText);
+        const data = {
+            id: arniaId,
+            timestamp: new Date().toLocaleString(),
+            forza: document.querySelector('#forza-selector .active')?.innerText || "ND",
+            opzioni: activeButtons,
+            reginaAnno: document.getElementById('regina-anno').value,
+            reginaColore: document.getElementById('regina-colore').value,
+            numCelle: document.getElementById('num-celle').value,
+            bloccoInizio: document.getElementById('blocco-inizio').value,
+            trattamento: document.getElementById('trattamento-tipo').value,
+            note: document.getElementById('note-finali').value
         };
-        localStorage.setItem('beetag_' + id, JSON.stringify(d));
-        alert("Salvato correttamente!");
+        localStorage.setItem('beetag_arnia_' + arniaId, JSON.stringify(data));
+        alert("Dati Arnia " + arniaId + " salvati correttamente!");
         location.reload();
+    }
+
+    function renderRiassunto() {
+        const d = JSON.parse(localStorage.getItem('beetag_arnia_' + arniaId));
+        if(d) {
+            document.getElementById('last-data').innerText = d.timestamp;
+            document.getElementById('last-forza').innerText = d.forza;
+            document.getElementById('last-regina').innerText = d.reginaColore || '-';
+            if(d.opzioni.includes("PRESENZA CELLE")) {
+                document.getElementById('last-alarms').innerHTML = "<span style='color:red; font-weight:bold;'>CELLE!</span>";
+            }
+        }
+    }
+
+    function toggleStats() {
+        const s = document.getElementById('overlay-stats');
+        s.style.display = (s.style.display === 'block') ? 'none' : 'block';
+        if(s.style.display === 'block') {
+            let html = "";
+            for (let i = 0; i < localStorage.length; i++){
+                const key = localStorage.key(i);
+                if(key.startsWith('beetag_arnia_')) {
+                    const d = JSON.parse(localStorage.getItem(key));
+                    html += `<div style="background:#f1f2f6; padding:10px; margin-bottom:10px; border-radius:10px;">
+                                <strong>Arnia ${d.id}</strong> - ${d.timestamp}<br>
+                                Forza: ${d.forza} | Note: ${d.note}
+                             </div>`;
+                }
+            }
+            document.getElementById('stats-content').innerHTML = html || "Nessun dato salvato.";
+        }
     }
 </script>
 </body>
