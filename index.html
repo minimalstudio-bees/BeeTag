@@ -7,43 +7,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #bcaf9f; --card: #fdfcfb; --text: #4a443f; --accent: #d4a373; --danger: #9e2a2b; --ok: #6b705c; --header: #2c2a28; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 220px; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 180px; }
         header { background: var(--header); color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 16px; font-weight: 900; letter-spacing: 2px; }
+        .logo { font-size: 14px; font-weight: 900; letter-spacing: 2px; }
         .dashboard-top { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; margin: 15px; }
-        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); min-height: 110px; display: flex; flex-direction: column; justify-content: center; }
-        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; line-height: 1.4; }
+        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); min-height: 100px; display: flex; flex-direction: column; justify-content: center; }
+        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 10px; line-height: 1.4; }
         .section { background: var(--card); border-radius: 25px; padding: 22px; margin: 0 15px 25px 15px; border-top: 6px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        h2 { font-size: 14px; text-transform: uppercase; color: #5d5753; border-bottom: 2px solid #f0edea; padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; margin-top: 0; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 15px; }
-        .btn-check { min-height: 60px; background: #fff; border: 2px solid #e8e2dc; border-radius: 16px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        h2 { font-size: 13px; text-transform: uppercase; color: #5d5753; border-bottom: 2px solid #f0edea; padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; margin-top: 0; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .btn-check { min-height: 55px; background: #fff; border: 2px solid #e8e2dc; border-radius: 14px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
         .btn-check.active { background: var(--accent) !important; color: #fff !important; border-color: var(--accent); }
         .btn-check.danger.active { background: var(--danger) !important; border-color: var(--danger); }
-        input, select, textarea { width: 100%; padding: 18px; border: 2px solid #e8e2dc; border-radius: 16px; font-size: 16px; box-sizing: border-box; margin-bottom: 15px; font-weight: 600; font-family: inherit; }
-        #reg-colore-visual { height: 60px; border-radius: 16px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; background: #eee; text-transform: uppercase; }
-        .alarm-badge { background: var(--danger); color: white; padding: 18px; border-radius: 18px; font-weight: 900; display: none; text-align: center; margin-bottom: 18px; }
-        .btn-save { position: fixed; bottom: 30px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 25px; border: none; border-radius: 30px; font-size: 20px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid #e8e2dc; border-radius: 14px; font-size: 15px; box-sizing: border-box; margin-bottom: 12px; font-weight: 600; font-family: inherit; }
+        #reg-colore-visual { height: 50px; border-radius: 14px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; background: #eee; font-size: 12px; }
+        .alarm-badge { background: var(--danger); color: white; padding: 15px; border-radius: 15px; font-weight: 900; display: none; text-align: center; margin-bottom: 15px; font-size: 12px; }
+        .btn-save { position: fixed; bottom: 20px; left: 20%; right: 20%; background: var(--ok); color: white; padding: 18px; border: none; border-radius: 25px; font-size: 16px; font-weight: 900; z-index: 1000; box-shadow: 0 8px 20px rgba(0,0,0,0.3); text-transform: uppercase; }
         #stats-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfcfb; z-index: 2000; padding: 25px; box-sizing: border-box; overflow-y: auto; }
+        .btn-close { background: var(--header); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 800; }
+        .btn-clear { background: var(--danger); color: white; border: none; width: 100%; padding: 15px; border-radius: 15px; font-weight: 800; margin-top: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">BEETAG</div>
-    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:12px; cursor:pointer; font-weight:900;">STORICO</div>
+    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:11px; cursor:pointer; font-weight:900;">STORICO</div>
 </header>
 
 <div class="dashboard-top">
     <div class="meteo-panel">
-        <div id="loc-name" style="font-size: 10px; font-weight: 900; color: #6b705c; text-transform: uppercase;">RICERCA...</div>
-        <div id="meteo-icon" style="font-size: 35px; margin: 5px 0;">--</div>
-        <div id="temp-val" style="font-size: 32px; font-weight: 900; color: var(--header);">--°</div>
+        <div id="loc-name" style="font-size: 9px; font-weight: 900; color: #6b705c;">LOCALIZZAZIONE...</div>
+        <div id="meteo-icon" style="font-size: 30px; margin: 5px 0;">--</div>
+        <div id="temp-val" style="font-size: 28px; font-weight: 900; color: var(--header);">--°</div>
     </div>
     <div class="summary-panel">
         <b>ULTIMA VISITA:</b> <span id="last-data">--/--</span><br>
         <b>FORZA:</b> <span id="last-forza">--</span><br>
         <b>ULTIMA OP:</b> <span id="last-op">--</span><br>
-        <b>CELLE REALI:</b> <span id="last-celle">--</span>
+        <b>CELLE:</b> <span id="last-celle">--</span>
     </div>
 </div>
 
@@ -66,7 +68,7 @@
     <!-- REGINA -->
     <div class="section">
         <h2><i class="fas fa-crown"></i> Regina</h2>
-        <input type="number" id="reg-anno" placeholder="Anno Nascita (es. 2026)" oninput="updateReginaUI(this.value)">
+        <input type="number" id="reg-anno" placeholder="Anno Nascita" oninput="updateReginaUI(this.value)">
         <div id="reg-colore-visual">COLORE REGINA</div>
         <div class="grid">
             <div class="btn-check" id="q-v" onclick="selectExclude(this, 'q-nv')">VISTA</div>
@@ -79,12 +81,12 @@
     <!-- SCIAMATURA -->
     <div class="section">
         <h2><i class="fas fa-biohazard"></i> Sciamatura</h2>
-        <div id="cella-alarm" class="alarm-badge">⚠️ CONTROLLO CELLE URGENTE!</div>
+        <div id="cella-alarm" class="alarm-badge">⚠️ CONTROLLO CELLE URGENTE (3GG+)</div>
         <div class="grid" style="grid-template-columns: 1fr 1fr;">
             <div class="btn-check danger multi" id="presenza-celle" onclick="this.classList.toggle('active')">CELLE REALI</div>
             <input type="number" id="num-celle" placeholder="Q.tà">
         </div>
-        <label style="font-size: 11px; font-weight: 800; color: var(--danger); text-transform: uppercase; display: block; margin-bottom: 5px;">Data avvistamento:</label>
+        <label style="font-size: 10px; font-weight: 800; color: var(--danger); display: block; margin-bottom: 5px;">DATA AVVISTAMENTO:</label>
         <input type="date" id="data-celle" onchange="checkCelleScadenza()">
     </div>
 
@@ -97,7 +99,10 @@
             <div class="btn-check op-btn" data-val="MESSO MELARIO" onclick="toggleMelari(this)">MESSO MELARIO</div>
             <div class="btn-check op-btn" data-val="NUTRIZIONE" onclick="this.classList.toggle('active')">NUTRIZIONE</div>
         </div>
-        <input type="number" id="num-melari" placeholder="Quanti melari messi?" style="display:none">
+        <div id="melari-box" style="display:none">
+            <label style="font-size: 10px; font-weight: 800; color: var(--accent);">NUMERO MELARI:</label>
+            <input type="number" id="num-melari" placeholder="1, 2, 3..." min="1">
+        </div>
         <input type="number" id="fogli-n" placeholder="Fogli Cerei Aggiunti">
     </div>
 
@@ -107,11 +112,11 @@
         <div id="tratt-alarm" class="alarm-badge">⚠️ RIMUOVERE TRA <span id="tratt-days">--</span> GG</div>
         <select id="tratt-tipo" onchange="calculateTrattamento()">
             <option value="" data-days="0">Nessuno...</option>
-            <option value="Oxybee" data-days="1">Oxybee (1gg)</option>
-            <option value="Apivar" data-days="42">Apivar (42gg)</option>
-            <option value="Apilife Var" data-days="28">Apilife Var (28gg)</option>
-            <option value="Apistan" data-days="42">Apistan (42gg)</option>
-            <option value="Formico" data-days="7">Formico (7gg)</option>
+            <option value="Oxybee" data-days="1">Oxybee (1g)</option>
+            <option value="Apivar" data-days="42">Apivar (42g)</option>
+            <option value="Apilife Var" data-days="28">Apilife Var (28g)</option>
+            <option value="Apistan" data-days="42">Apistan (42g)</option>
+            <option value="Formico" data-days="7">Formico (7g)</option>
         </select>
         <input type="date" id="tratt-data" onchange="calculateTrattamento()">
     </div>
@@ -123,10 +128,19 @@
             <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-camera"></i>&nbsp;FOTO<input type="file" accept="image/*" capture="camera" style="display:none"></label>
             <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-microphone"></i>&nbsp;AUDIO<input type="file" accept="audio/*" capture style="display:none"></label>
         </div>
-        <textarea id="note-finali" rows="4" placeholder="Annotazioni..."></textarea>
+        <textarea id="note-finali" rows="4" placeholder="Note visita..."></textarea>
     </div>
 
     <button class="btn-save" onclick="saveAll()">SALVA VISITA</button>
+</div>
+
+<div id="stats-overlay">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>STORICO</h2>
+        <button class="btn-close" onclick="document.getElementById('stats-overlay').style.display='none'">CHIUDI</button>
+    </div>
+    <div id="stats-list"></div>
+    <button class="btn-clear" onclick="clearHistory()">CANCELLA TUTTO LO STORICO</button>
 </div>
 
 <script>
@@ -144,7 +158,7 @@
 
     function toggleMelari(el) {
         el.classList.toggle('active');
-        document.getElementById('num-melari').style.display = el.classList.contains('active') ? 'block' : 'none';
+        document.getElementById('melari-box').style.display = el.classList.contains('active') ? 'block' : 'none';
     }
 
     function checkCelleScadenza() {
@@ -187,15 +201,38 @@
             operazioni: ops || "Nessuna",
             note: document.getElementById('note-finali').value || "-"
         };
-        let db = JSON.parse(localStorage.getItem('beetag_db')) || [];
+        let db = JSON.parse(localStorage.getItem('beetag_db_final')) || [];
         db.unshift(visita);
-        localStorage.setItem('beetag_db', JSON.stringify(db));
-        localStorage.setItem('beetag_last_' + arniaId, JSON.stringify(visita));
+        localStorage.setItem('beetag_db_final', JSON.stringify(db));
+        localStorage.setItem('beetag_last_final_' + arniaId, JSON.stringify(visita));
         alert("VISITA SALVATA!"); location.reload();
     }
 
+    function showStats() {
+        document.getElementById('stats-overlay').style.display = 'block';
+        const db = JSON.parse(localStorage.getItem('beetag_db_final')) || [];
+        const filtered = db.filter(h => h.id === arniaId);
+        document.getElementById('stats-list').innerHTML = filtered.map(h => `
+            <div style="background:#fff; padding:15px; border-radius:15px; margin-bottom:10px; border-left:5px solid var(--accent); font-size:12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <b>${h.data}</b> - Forza: ${h.forza}<br>
+                Op: ${h.operazioni}<br>
+                <i>Note: ${h.note}</i>
+            </div>
+        `).join('') || "Nessuno storico.";
+    }
+
+    function clearHistory() {
+        if(confirm("Sei sicuro di voler cancellare tutto lo storico di questa arnia?")) {
+            let db = JSON.parse(localStorage.getItem('beetag_db_final')) || [];
+            db = db.filter(h => h.id !== arniaId);
+            localStorage.setItem('beetag_db_final', JSON.stringify(db));
+            localStorage.removeItem('beetag_last_final_' + arniaId);
+            location.reload();
+        }
+    }
+
     window.onload = () => {
-        const last = JSON.parse(localStorage.getItem('beetag_last_' + arniaId));
+        const last = JSON.parse(localStorage.getItem('beetag_last_final_' + arniaId));
         if(last) {
             document.getElementById('last-data').innerText = last.data;
             document.getElementById('last-forza').innerText = last.forza;
@@ -206,7 +243,9 @@
             navigator.geolocation.getCurrentPosition(pos => {
                 const lat = pos.coords.latitude; const lon = pos.coords.longitude;
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                    .then(r => r.json()).then(d => { document.getElementById('loc-name').innerText = (d.address.city || d.address.town || "APIARIO").toUpperCase(); });
+                    .then(r => r.json()).then(d => { 
+                        document.getElementById('loc-name').innerText = (d.address.city || d.address.town || d.address.village || "APIARIO").toUpperCase(); 
+                    });
                 fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
                     .then(r => r.json()).then(m => {
                         document.getElementById('temp-val').innerText = Math.round(m.current_weather.temperature) + "°";
