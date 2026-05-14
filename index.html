@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BeeTag - Minimal Studio</title>
+    <title>BEETAG - Minimal Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --bg: #bcaf9f; --card: #fdfcfb; --text: #4a443f; --accent: #d4a373; --danger: #9e2a2b; --ok: #6b705c; --header: #2c2a28; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 280px; }
-        header { background: var(--header); color: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 900; position: sticky; top: 0; z-index: 1000; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 220px; }
+        header { background: var(--header); color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 16px; font-weight: 900; letter-spacing: 2px; }
         .dashboard-top { display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px; margin: 15px; }
-        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; }
+        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); min-height: 110px; display: flex; flex-direction: column; justify-content: center; }
         .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; line-height: 1.4; }
         .section { background: var(--card); border-radius: 25px; padding: 22px; margin: 0 15px 25px 15px; border-top: 6px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         h2 { font-size: 14px; text-transform: uppercase; color: #5d5753; border-bottom: 2px solid #f0edea; padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; margin-top: 0; }
@@ -21,21 +22,20 @@
         input, select, textarea { width: 100%; padding: 18px; border: 2px solid #e8e2dc; border-radius: 16px; font-size: 16px; box-sizing: border-box; margin-bottom: 15px; font-weight: 600; font-family: inherit; }
         #reg-colore-visual { height: 60px; border-radius: 16px; margin-bottom: 15px; border: 3px solid #e8e2dc; display: flex; align-items: center; justify-content: center; font-weight: 900; background: #eee; text-transform: uppercase; }
         .alarm-badge { background: var(--danger); color: white; padding: 18px; border-radius: 18px; font-weight: 900; display: none; text-align: center; margin-bottom: 18px; }
-        .btn-save { position: fixed; bottom: 80px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 25px; border: none; border-radius: 30px; font-size: 22px; font-weight: 900; z-index: 1000; box-shadow: 0 12px 30px rgba(0,0,0,0.4); text-transform: uppercase; }
-        .footer-minimal { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); padding: 20px; text-align: center; z-index: 999; }
+        .btn-save { position: fixed; bottom: 30px; left: 15px; right: 15px; background: var(--ok); color: white; padding: 25px; border: none; border-radius: 30px; font-size: 20px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-transform: uppercase; }
         #stats-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfcfb; z-index: 2000; padding: 25px; box-sizing: border-box; overflow-y: auto; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="display:flex; align-items:center; gap:12px;"><i class="fas fa-bee"></i> BeeTag</div>
-    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:10px 18px; border-radius:14px; font-size:14px; cursor:pointer;">STORICO</div>
+    <div class="logo">BEETAG</div>
+    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:12px; cursor:pointer; font-weight:900;">STORICO</div>
 </header>
 
 <div class="dashboard-top">
     <div class="meteo-panel">
-        <div id="loc-name" style="font-size: 10px; font-weight: 900; color: #6b705c;">LOCALIZZAZIONE...</div>
+        <div id="loc-name" style="font-size: 10px; font-weight: 900; color: #6b705c; text-transform: uppercase;">RICERCA...</div>
         <div id="meteo-icon" style="font-size: 35px; margin: 5px 0;">--</div>
         <div id="temp-val" style="font-size: 32px; font-weight: 900; color: var(--header);">--°</div>
     </div>
@@ -48,6 +48,7 @@
 </div>
 
 <div class="container">
+    <!-- STATO FAMIGLIA -->
     <div class="section">
         <h2><i class="fas fa-users"></i> Stato Famiglia</h2>
         <div class="grid" id="forza-selector">
@@ -62,9 +63,10 @@
         </div>
     </div>
 
+    <!-- REGINA -->
     <div class="section">
         <h2><i class="fas fa-crown"></i> Regina</h2>
-        <input type="number" id="reg-anno" placeholder="Anno Nascita" oninput="updateReginaUI(this.value)">
+        <input type="number" id="reg-anno" placeholder="Anno Nascita (es. 2026)" oninput="updateReginaUI(this.value)">
         <div id="reg-colore-visual">COLORE REGINA</div>
         <div class="grid">
             <div class="btn-check" id="q-v" onclick="selectExclude(this, 'q-nv')">VISTA</div>
@@ -74,23 +76,19 @@
         </div>
     </div>
 
+    <!-- SCIAMATURA -->
     <div class="section">
         <h2><i class="fas fa-biohazard"></i> Sciamatura</h2>
         <div id="cella-alarm" class="alarm-badge">⚠️ CONTROLLO CELLE URGENTE!</div>
         <div class="grid" style="grid-template-columns: 1fr 1fr;">
             <div class="btn-check danger multi" id="presenza-celle" onclick="this.classList.toggle('active')">CELLE REALI</div>
-            <input type="number" id="num-celle" placeholder="Quantità">
+            <input type="number" id="num-celle" placeholder="Q.tà">
         </div>
-        <label style="font-size: 12px; font-weight: 800; color: var(--danger);">DATA AVVISTAMENTO CELLE:</label>
+        <label style="font-size: 11px; font-weight: 800; color: var(--danger); text-transform: uppercase; display: block; margin-bottom: 5px;">Data avvistamento:</label>
         <input type="date" id="data-celle" onchange="checkCelleScadenza()">
     </div>
 
-    <div class="section">
-        <h2><i class="fas fa-lock"></i> Blocco Covata</h2>
-        <div id="blocco-alarm" class="alarm-badge">⚠️ SBLOCCO TRA: <span id="days-to-go">--</span> GG</div>
-        <input type="date" id="blocco-inizio" onchange="calculateBlocco()">
-    </div>
-
+    <!-- OPERAZIONI -->
     <div class="section">
         <h2><i class="fas fa-tools"></i> Operazioni</h2>
         <div class="grid">
@@ -103,38 +101,32 @@
         <input type="number" id="fogli-n" placeholder="Fogli Cerei Aggiunti">
     </div>
 
+    <!-- TRATTAMENTI -->
     <div class="section">
         <h2><i class="fas fa-medkit"></i> Trattamenti</h2>
         <div id="tratt-alarm" class="alarm-badge">⚠️ RIMUOVERE TRA <span id="tratt-days">--</span> GG</div>
         <select id="tratt-tipo" onchange="calculateTrattamento()">
             <option value="" data-days="0">Nessuno...</option>
-            <option value="Oxybee" data-days="1">Oxybee</option>
-            <option value="Apivar" data-days="42">Apivar</option>
-            <option value="Apilife Var" data-days="28">Apilife Var</option>
-            <option value="Apistan" data-days="42">Apistan</option>
-            <option value="Formico" data-days="7">Formico</option>
+            <option value="Oxybee" data-days="1">Oxybee (1gg)</option>
+            <option value="Apivar" data-days="42">Apivar (42gg)</option>
+            <option value="Apilife Var" data-days="28">Apilife Var (28gg)</option>
+            <option value="Apistan" data-days="42">Apistan (42gg)</option>
+            <option value="Formico" data-days="7">Formico (7gg)</option>
         </select>
         <input type="date" id="tratt-data" onchange="calculateTrattamento()">
     </div>
 
+    <!-- MEDIA E NOTE -->
     <div class="section">
-        <h2><i class="fas fa-microphone-alt"></i> Media & Note</h2>
+        <h2><i class="fas fa-camera"></i> Media & Note</h2>
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-camera"></i>&nbsp;FOTO<input type="file" accept="image/*" capture="camera" style="display:none"></label>
+            <label class="btn-check" style="background:#4a443f; color:white;"><i class="fas fa-microphone"></i>&nbsp;AUDIO<input type="file" accept="audio/*" capture style="display:none"></label>
+        </div>
         <textarea id="note-finali" rows="4" placeholder="Annotazioni..."></textarea>
     </div>
 
     <button class="btn-save" onclick="saveAll()">SALVA VISITA</button>
-</div>
-
-<div class="footer-minimal">
-    <a href="#" style="color:var(--header); font-weight:900; letter-spacing:2px; text-decoration:none;">MINIMAL STUDIO</a>
-</div>
-
-<div id="stats-overlay">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h2>STORICO</h2>
-        <button onclick="document.getElementById('stats-overlay').style.display='none'">CHIUDI</button>
-    </div>
-    <div id="stats-list"></div>
 </div>
 
 <script>
@@ -164,24 +156,17 @@
 
     function updateReginaUI(anno) {
         const box = document.getElementById('reg-colore-visual');
+        if(!anno) { box.style.background = "#eee"; box.innerText = "COLORE REGINA"; return; }
         const last = anno.toString().slice(-1);
         const map = {"4":"#2ecc71","9":"#2ecc71","0":"#3498db","5":"#3498db","1":"#ffffff","6":"#ffffff","2":"#f1c40f","7":"#f1c40f","3":"#e74c3c","8":"#e74c3c"};
-        if(map[last]) { box.style.background = map[last]; box.innerText = "COLORE REGINA"; }
-    }
-
-    function calculateBlocco() {
-        const d = new Date(document.getElementById('blocco-inizio').value);
-        const sblocco = new Date(d); sblocco.setDate(sblocco.getDate() + 21);
-        const diff = Math.ceil((sblocco - new Date()) / 86400000);
-        document.getElementById('blocco-alarm').style.display = diff > 0 ? 'block' : 'none';
-        document.getElementById('days-to-go').innerText = diff;
+        if(map[last]) { box.style.background = map[last]; box.innerText = "COLORE REGINA"; box.style.color = (last=="1"||last=="6") ? "#000" : "#fff"; }
     }
 
     function calculateTrattamento() {
         const tipo = document.getElementById('tratt-tipo');
         const giorni = tipo.options[tipo.selectedIndex].getAttribute('data-days');
         const dataInizio = new Date(document.getElementById('tratt-data').value);
-        if(!giorni || giorni == "0" || isNaN(dataInizio)) return;
+        if(!giorni || giorni == "0" || isNaN(dataInizio)) { document.getElementById('tratt-alarm').style.display = 'none'; return; }
         const fine = new Date(dataInizio); fine.setDate(fine.getDate() + parseInt(giorni));
         const diff = Math.ceil((fine - new Date()) / 86400000);
         document.getElementById('tratt-alarm').style.display = diff > 0 ? 'block' : 'none';
@@ -191,7 +176,8 @@
     function saveAll() {
         const forza = document.querySelector('#forza-selector .active')?.getAttribute('data-val') || "N.D.";
         let ops = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.getAttribute('data-val')).join(', ');
-        if(document.getElementById('num-melari').value > 0) ops += " (" + document.getElementById('num-melari').value + " melari)";
+        const melari = document.getElementById('num-melari').value;
+        if(melari > 0) ops += ` (${melari} melari)`;
         
         const visita = {
             id: arniaId,
@@ -205,17 +191,7 @@
         db.unshift(visita);
         localStorage.setItem('beetag_db', JSON.stringify(db));
         localStorage.setItem('beetag_last_' + arniaId, JSON.stringify(visita));
-        alert("Salvato!"); location.reload();
-    }
-
-    function showStats() {
-        document.getElementById('stats-overlay').style.display = 'block';
-        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
-        document.getElementById('stats-list').innerHTML = db.filter(h => h.id === arniaId).map(h => `
-            <div style="background:#eee; padding:10px; margin-bottom:5px; border-radius:10px">
-                <b>${h.data}</b> - Forza: ${h.forza}<br>Op: ${h.operazioni}
-            </div>
-        `).join('');
+        alert("VISITA SALVATA!"); location.reload();
     }
 
     window.onload = () => {
