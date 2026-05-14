@@ -3,150 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BEETAG - Minimal Studio</title>
+    <title>BeeTag - Minimal Studio</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root { --primary: #f39c12; --dark: #1a252f; --card-bg: #2c3e50; --text: #ecf0f1; --red: #e74c3c; --green: #27ae60; }
-        body { font-family: 'Segoe UI', sans-serif; background: #121a21; color: var(--text); margin: 0; padding-bottom: 120px; }
+        :root { --bg: #bcaf9f; --card: #fdfcfb; --text: #4a443f; --accent: #d4a373; --danger: #9e2a2b; --ok: #6b705c; --header: #2c2a28; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 100px; }
         
-        header { background: var(--dark); padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; font-size: 1.8rem; color: var(--primary); letter-spacing: 2px; }
-        .arnia-info { font-weight: bold; font-size: 1.1rem; color: var(--primary); }
+        header { background: var(--header); color: #fff; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* BEETAG PIÙ GRANDE E MAIUSCOLO */
+        .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+        
+        .dashboard-top { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin: 15px; }
+        .meteo-panel { background: #eaddcf; border-radius: 20px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 110px; border: 1px solid rgba(0,0,0,0.1); }
+        .summary-panel { background: var(--card); border-radius: 20px; padding: 15px; font-size: 11px; }
 
-        .container { padding: 15px; max-width: 600px; margin: auto; }
-        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        h3 { margin-top: 0; color: var(--primary); border-bottom: 1px solid rgba(243, 156, 18, 0.3); padding-bottom: 5px; font-size: 1rem; text-transform: uppercase; }
+        .container { padding: 0 15px; }
+        .section { background: var(--card); border-radius: 25px; padding: 22px; margin-bottom: 25px; border-top: 6px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
         
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .input-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: bold; }
-        
-        select, input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: none; background: #1a252f; color: white; box-sizing: border-box; }
-        
-        .colore-box { padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; background: var(--green); color: white; }
-        .alarm { background: rgba(231, 76, 60, 0.2); border: 1px solid var(--red); color: #ff9999; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; text-align: center; }
-        
-        .btn-save { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; background: var(--primary); color: var(--dark); border: none; padding: 15px; border-radius: 50px; font-weight: 900; font-size: 1.2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 999; }
+        h2 { font-size: 14px; text-transform: uppercase; color: #5d5753; border-bottom: 2px solid #f0edea; padding-bottom: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; margin-top: 0; }
 
-        .history-item { background: #1a252f; margin-bottom: 10px; padding: 12px; border-radius: 5px; border-left: 5px solid var(--primary); font-size: 0.9rem; }
-        .footer { text-align: center; padding: 20px; font-size: 0.8rem; opacity: 0.6; }
-        .footer a { color: var(--primary); text-decoration: none; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+        .btn-check { min-height: 55px; background: #fff; border: 2px solid #e8e2dc; border-radius: 15px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-check.active { background: var(--accent) !important; color: #fff !important; border-color: var(--accent); }
+        
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid #e8e2dc; border-radius: 15px; font-size: 15px; box-sizing: border-box; margin-bottom: 12px; font-family: inherit; color: var(--text); font-weight: 600; }
+        
+        /* SALVA VISITA MENO INVASIVO */
+        .btn-save { position: fixed; bottom: 25px; right: 20px; background: var(--ok); color: white; width: 70px; height: 70px; border: none; border-radius: 50%; font-size: 24px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 1001; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .btn-save:active { transform: scale(0.9); }
+        .save-label { position: fixed; bottom: 45px; right: 100px; background: var(--ok); color: white; padding: 8px 15px; border-radius: 10px; font-weight: 900; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* FOOTER CORRETTO */
+        .footer-minimal { padding: 20px; text-align: center; margin-top: 10px; }
+        .footer-minimal a { color: var(--header); text-decoration: none; font-weight: 800; font-size: 12px; letter-spacing: 2px; opacity: 0.7; }
+
+        #stats-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfcfb; z-index: 2000; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .info-label { font-size: 10px; font-weight: 800; color: #8a817c; margin-bottom: 5px; display: block; text-transform: uppercase; }
+        
+        .history-card { background: #fff; padding: 18px; border-radius: 18px; margin-bottom: 15px; border-left: 6px solid var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">BEETAG</div>
-    <div id="arnia-display" class="arnia-info">Arnia --</div>
+    <div class="logo-text"><i class="fas fa-bee"></i> BEETAG</div>
+    <div onclick="showStats()" style="background:rgba(255,255,255,0.15); padding:8px 15px; border-radius:12px; font-size:13px;"><i class="fas fa-history"></i> STORICO</div>
 </header>
 
-<div class="container">
-    <div class="card">
-        <h3><i class="fas fa-crown"></i> Regina</h3>
-        <div class="grid">
-            <div class="input-group">
-                <label>Stato</label>
-                <select id="reg-status">
-                    <option value="Vista">Vista</option>
-                    <option value="Uova">Uova</option>
-                    <option value="Assente">Assente</option>
-                    <option value="Cella">Cella Reale</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Colore 2026</label>
-                <div class="colore-box">VERDE</div>
-            </div>
-        </div>
+<div class="dashboard-top">
+    <div class="meteo-panel">
+        <div id="loc-name" style="font-size: 10px; font-weight: 900; opacity: 0.7;">RILEVAMENTO...</div>
+        <div id="meteo-icon" style="font-size: 35px; margin: 5px 0;"></div>
+        <div id="temp-val" style="font-size: 32px; font-weight: 900;">--°</div>
     </div>
-
-    <div class="card">
-        <h3><i class="fas fa-biohazard"></i> Sciamatura</h3>
-        <div class="grid">
-            <div class="input-group">
-                <label>Data Ritrovamento</label>
-                <input type="date" id="cell-date">
-            </div>
-            <div class="input-group">
-                <label>Tipo Celle</label>
-                <select id="cell-type">
-                    <option value="Nessuna">Nessuna</option>
-                    <option value="Cupolini">Cupolini</option>
-                    <option value="Aperte">Aperte</option>
-                    <option value="Chiuse">Chiuse</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3><i class="fas fa-pause-circle"></i> Blocco Covata</h3>
-        <label>Data Inizio</label>
-        <input type="date" id="block-start" onchange="updateBlock()">
-        <div id="block-msg" class="alarm">
-            SBLOCCO TRA: <span id="days">--</span> GIORNI
-        </div>
-    </div>
-
-    <div class="card">
-        <h3><i class="fas fa-sticky-note"></i> Note</h3>
-        <textarea id="notes" rows="2" placeholder="Dettagli visita..."></textarea>
-    </div>
-
-    <div class="card">
-        <h3><i class="fas fa-history"></i> Storico</h3>
-        <div id="log-list"></div>
+    <div class="summary-panel">
+        <span class="info-label">Ultima Visita</span>
+        <div id="last-data" style="font-weight:900; font-size:14px; margin-bottom:8px;">--/--/--</div>
+        <span class="info-label">Forza</span>
+        <div id="last-forza" style="font-weight:900; font-size:14px; color:var(--accent);">---</div>
     </div>
 </div>
 
-<button class="btn-save" onclick="save()">SALVA VISITA</button>
+<div class="container">
+    <div class="section">
+        <h2><i class="fas fa-users"></i> Stato Famiglia</h2>
+        <div class="grid" id="forza-selector">
+            <div class="btn-check" data-val="FORTE" onclick="selectOne(this)">FORTE</div>
+            <div class="btn-check" data-val="MEDIA" onclick="selectOne(this)">MEDIA</div>
+            <div class="btn-check" data-val="SCARSA" onclick="selectOne(this)">SCARSA</div>
+        </div>
+    </div>
 
-<div class="footer">
-    Progetto <a href="https://linktr.ee/minimal_studio" target="_blank">Minimal Studio</a>
+    <div class="section">
+        <h2><i class="fas fa-crown"></i> Regina</h2>
+        <span class="info-label">Anno Nascita</span>
+        <input type="number" id="reg-anno" placeholder="Es: 2026" oninput="updateReginaUI(this.value)">
+        <div id="reg-colore-visual" style="height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:900; margin-bottom:15px; border:2px solid #e8e2dc; background:#eee;">COLORE</div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-biohazard"></i> Sciamatura</h2>
+        <span class="info-label">Data Ritrovamento Celle</span>
+        <input type="date" id="cell-date">
+        <div class="grid" style="grid-template-columns: 2fr 1fr;">
+            <div class="btn-check" id="presenza-celle" onclick="this.classList.toggle('active')" style="border-color:var(--danger); color:var(--danger);">CELLE REALI</div>
+            <input type="number" id="num-celle" placeholder="Q.tà">
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-lock"></i> Blocco Covata</h2>
+        <input type="date" id="blocco-inizio" onchange="calculateBlocco()">
+    </div>
+
+    <div class="section">
+        <h2><i class="fas fa-edit"></i> Note</h2>
+        <textarea id="note-finali" rows="3" placeholder="Scrivi qui..."></textarea>
+    </div>
+
+    <div class="footer-minimal">
+        <a href="https://linktr.ee/minimal_studio" target="_blank">MINIMAL STUDIO</a>
+    </div>
+</div>
+
+<!-- TASTO SALVA DISCRETO -->
+<span class="save-label">SALVA</span>
+<button class="btn-save" onclick="saveAll()">
+    <i class="fas fa-save"></i>
+</button>
+
+<!-- OVERLAY STORICO DETTAGLIATO -->
+<div id="stats-overlay">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 style="margin:0;">STORICO COMPLETO</h2>
+        <i class="fas fa-times" onclick="document.getElementById('stats-overlay').style.display='none'" style="font-size:24px;"></i>
+    </div>
+    <div id="stats-list"></div>
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('a') || 'Generica';
-    document.getElementById('arnia-display').innerText = "Arnia " + id;
+    const arniaId = new URLSearchParams(window.location.search).get('a') || "1";
 
-    function updateBlock() {
-        const val = document.getElementById('block-start').value;
-        if (!val) return;
-        const d = Math.floor((new Date() - new Date(val)) / (1000*60*60*24));
-        const r = 21 - d;
-        document.getElementById('block-msg').style.display = r >= 0 ? "block" : "none";
-        document.getElementById('days').innerText = r;
+    function selectOne(el) {
+        el.parentElement.querySelectorAll('.btn-check').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    function save() {
-        const entry = {
-            date: new Date().toLocaleString('it-IT'),
-            reg: document.getElementById('reg-status').value,
-            cel: document.getElementById('cell-type').value,
-            cd: document.getElementById('cell-date').value || '-',
-            blk: document.getElementById('block-start').value || 'No',
-            txt: document.getElementById('notes').value || '-'
+    function updateReginaUI(anno) {
+        const box = document.getElementById('reg-colore-visual');
+        if(!anno) return;
+        const last = anno.toString().slice(-1);
+        const map = {"4":"#2ecc71","9":"#2ecc71","0":"#3498db","5":"#3498db","1":"#ffffff","6":"#ffffff","2":"#f1c40f","7":"#f1c40f","3":"#e74c3c","8":"#e74c3c"};
+        const nomi = {"4":"VERDE","9":"VERDE","0":"BLU","5":"BLU","1":"BIANCO","6":"BIANCO","2":"GIALLO","7":"GIALLO","3":"ROSSO","8":"ROSSO"};
+        if(map[last]) { box.style.background = map[last]; box.innerText = nomi[last]; box.style.color = (last=="1"||last=="6")?"#000":"#fff"; }
+    }
+
+    function saveAll() {
+        const forza = document.querySelector('#forza-selector .active')?.getAttribute('data-val') || "ND";
+        const visita = {
+            id: arniaId,
+            data: new Date().toLocaleDateString('it-IT'),
+            forza: forza,
+            celle: document.getElementById('presenza-celle').classList.contains('active') ? "SI (" + document.getElementById('num-celle').value + ")" : "NO",
+            dataCelle: document.getElementById('cell-date').value || "-",
+            note: document.getElementById('note-finali').value || "-"
         };
-        let data = JSON.parse(localStorage.getItem('bt_data_' + id)) || [];
-        data.unshift(entry);
-        localStorage.setItem('bt_data_' + id, JSON.stringify(data.slice(0, 15)));
-        showLogs();
-        alert("Dati salvati!");
-        document.getElementById('notes').value = "";
+
+        let db = JSON.parse(localStorage.getItem('beetag_db')) || [];
+        db.unshift(visita);
+        localStorage.setItem('beetag_db', JSON.stringify(db.slice(0, 100)));
+        localStorage.setItem('beetag_last_' + arniaId, JSON.stringify(visita));
+        
+        alert("Salvato!");
+        location.reload();
     }
 
-    function showLogs() {
-        let data = JSON.parse(localStorage.getItem('bt_data_' + id)) || [];
-        document.getElementById('log-list').innerHTML = data.map(i => `
-            <div class="history-item">
-                <strong>${i.date}</strong><br>
-                R: ${i.reg} | C: ${i.cel} (${i.cd})<br>
-                Blocco: ${i.blk} | Note: ${i.txt}
+    function showStats() {
+        document.getElementById('stats-overlay').style.display = 'block';
+        const db = JSON.parse(localStorage.getItem('beetag_db')) || [];
+        document.getElementById('stats-list').innerHTML = db.map(h => `
+            <div class="history-card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <strong>Arnia ${h.id}</strong>
+                    <span style="font-size:12px; opacity:0.6;">${h.data}</span>
+                </div>
+                <div style="font-size:13px; line-height:1.6;">
+                    <b>Forza:</b> ${h.forza}<br>
+                    <b>Celle Reali:</b> ${h.celle} | <b>Ritrovate:</b> ${h.dataCelle}<br>
+                    <div style="margin-top:8px; padding-top:8px; border-top:1px solid #eee; color:#666;">
+                        <i>Note: ${h.note}</i>
+                    </div>
+                </div>
             </div>
         `).join('');
     }
-    showLogs();
+
+    window.onload = () => {
+        const last = JSON.parse(localStorage.getItem('beetag_last_' + arniaId));
+        if(last) { 
+            document.getElementById('last-data').innerText = last.data; 
+            document.getElementById('last-forza').innerText = last.forza; 
+        }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`)
+                .then(r => r.json()).then(m => {
+                    document.getElementById('temp-val').innerText = Math.round(m.current_weather.temperature) + "°";
+                    document.getElementById('meteo-icon').innerText = m.current_weather.weathercode < 3 ? '☀️' : '☁️';
+                    document.getElementById('loc-name').innerText = "POSIZIONE OK";
+                });
+            });
+        }
+    };
 </script>
 </body>
 </html>
