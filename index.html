@@ -6,184 +6,147 @@
     <title>BEETAG - Minimal Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #f39c12; --dark: #1a252f; --card-bg: #2c3e50; --text: #ffffff; --red: #e74c3c; --green: #27ae60; }
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #121a21; color: var(--text); margin: 0; padding-bottom: 120px; }
+        :root { --primary: #f39c12; --dark: #1a252f; --card-bg: #2c3e50; --text: #ecf0f1; --red: #e74c3c; --green: #27ae60; }
+        body { font-family: 'Segoe UI', sans-serif; background: #121a21; color: var(--text); margin: 0; padding-bottom: 120px; }
         
-        /* HEADER PROFESSIONALE */
-        header { background: var(--dark); padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .logo { font-family: 'Arial Black', sans-serif; font-weight: 900; font-size: 2.5rem; color: #ffffff; letter-spacing: 5px; line-height: 1; text-shadow: 2px 2px 0px var(--primary); }
-        .arnia-badge { background: var(--primary); color: var(--dark); padding: 8px 15px; border-radius: 5px; font-weight: 900; font-size: 1.2rem; }
+        header { background: var(--dark); padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; font-size: 1.8rem; color: var(--primary); letter-spacing: 2px; }
+        .arnia-info { font-weight: bold; font-size: 1.1rem; color: var(--primary); }
 
-        .container { padding: 20px; max-width: 600px; margin: auto; }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); }
-        h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid rgba(243, 156, 18, 0.3); padding-bottom: 10px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        .card { background: var(--card-bg); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        h3 { margin-top: 0; color: var(--primary); border-bottom: 1px solid rgba(243, 156, 18, 0.3); padding-bottom: 5px; font-size: 1rem; text-transform: uppercase; }
         
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 5px; font-size: 0.8rem; font-weight: bold; }
         
-        select, input, textarea { width: 100%; padding: 12px; border-radius: 6px; border: 2px solid transparent; background: #1a252f; color: white; font-size: 1rem; transition: 0.3s; }
-        select:focus, input:focus { border-color: var(--primary); outline: none; }
+        select, input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: none; background: #1a252f; color: white; box-sizing: border-box; }
         
-        .colore-regina { padding: 12px; border-radius: 6px; text-align: center; font-weight: 900; letter-spacing: 1px; border: 2px solid rgba(255,255,255,0.2); }
-        .alarm-box { background: rgba(231, 76, 60, 0.2); border: 2px solid var(--red); color: #ff9999; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; text-align: center; font-weight: bold; }
+        .colore-box { padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; background: var(--green); color: white; }
+        .alarm { background: rgba(231, 76, 60, 0.2); border: 1px solid var(--red); color: #ff9999; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; text-align: center; }
         
-        /* BOTTONE SALVA */
-        .btn-save { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; background: var(--primary); color: var(--dark); border: none; padding: 18px; border-radius: 50px; font-weight: 900; font-size: 1.3rem; box-shadow: 0 10px 25px rgba(243, 156, 18, 0.4); z-index: 999; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn-save:active { transform: translateX(-50%) scale(0.95); }
+        .btn-save { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 85%; background: var(--primary); color: var(--dark); border: none; padding: 15px; border-radius: 50px; font-weight: 900; font-size: 1.2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 999; }
 
-        .history-item { background: #1a252f; margin-bottom: 12px; padding: 15px; border-radius: 8px; border-left: 6px solid var(--primary); box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
-        .history-date { color: var(--primary); font-weight: 900; font-size: 1rem; margin-bottom: 5px; display: block; }
-        .footer-text { text-align: center; font-size: 0.8rem; opacity: 0.5; padding: 20px; letter-spacing: 1px; }
-        .footer-text a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--primary); }
+        .history-item { background: #1a252f; margin-bottom: 10px; padding: 12px; border-radius: 5px; border-left: 5px solid var(--primary); font-size: 0.9rem; }
+        .footer { text-align: center; padding: 20px; font-size: 0.8rem; opacity: 0.6; }
+        .footer a { color: var(--primary); text-decoration: none; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">BEETAG</div>
-    <div id="arnia-num" class="arnia-badge">A --</div>
+    <div id="arnia-display" class="arnia-info">Arnia --</div>
 </header>
 
 <div class="container">
-    <!-- SEZIONE REGINA -->
     <div class="card">
         <h3><i class="fas fa-crown"></i> Regina</h3>
         <div class="grid">
             <div class="input-group">
-                <label>Stato Reale</label>
+                <label>Stato</label>
                 <select id="reg-status">
-                    <option value="Vista">VISTA</option>
-                    <option value="Uova">UOVA (Presenti)</option>
-                    <option value="Assente">ASSENTE</option>
-                    <option value="Cella">CELLA REALE</option>
+                    <option value="Vista">Vista</option>
+                    <option value="Uova">Uova</option>
+                    <option value="Assente">Assente</option>
+                    <option value="Cella">Cella Reale</option>
                 </select>
             </div>
             <div class="input-group">
-                <label>Marcatura 2026</label>
-                <div class="colore-regina" style="background: var(--green);">VERDE</div>
+                <label>Colore 2026</label>
+                <div class="colore-box">VERDE</div>
             </div>
         </div>
     </div>
 
-    <!-- SEZIONE SCIAMATURA & CELLE -->
     <div class="card">
-        <h3><i class="fas fa-exclamation-triangle"></i> Controllo Sciamatura</h3>
+        <h3><i class="fas fa-biohazard"></i> Sciamatura</h3>
         <div class="grid">
             <div class="input-group">
-                <label>Ritrovamento</label>
+                <label>Data Ritrovamento</label>
                 <input type="date" id="cell-date">
             </div>
             <div class="input-group">
                 <label>Tipo Celle</label>
                 <select id="cell-type">
-                    <option value="Nessuna">NESSUNA</option>
-                    <option value="Cupolini">CUPOLINI</option>
-                    <option value="Aperte">APERTE</option>
-                    <option value="Chiuse">CHIUSE</option>
+                    <option value="Nessuna">Nessuna</option>
+                    <option value="Cupolini">Cupolini</option>
+                    <option value="Aperte">Aperte</option>
+                    <option value="Chiuse">Chiuse</option>
                 </select>
             </div>
         </div>
     </div>
 
-    <!-- SEZIONE BLOCCO COVATA -->
     <div class="card">
-        <h3><i class="fas fa-clock"></i> Blocco Covata</h3>
-        <label>Inizio Trattamento / Blocco</label>
-        <input type="date" id="block-start" onchange="checkBlock()">
-        <div id="block-alarm" class="alarm-box">
-            <i class="fas fa-hourglass-half"></i> SBLOCCO TRA: <span id="days-left">--</span> GIORNI
+        <h3><i class="fas fa-pause-circle"></i> Blocco Covata</h3>
+        <label>Data Inizio</label>
+        <input type="date" id="block-start" onchange="updateBlock()">
+        <div id="block-msg" class="alarm">
+            SBLOCCO TRA: <span id="days">--</span> GIORNI
         </div>
     </div>
 
-    <!-- NOTE E STORICO -->
     <div class="card">
-        <h3><i class="fas fa-clipboard-list"></i> Note Visita</h3>
-        <textarea id="visit-notes" rows="2" placeholder="Esempio: Famiglia forte, aggiunto melario..."></textarea>
+        <h3><i class="fas fa-sticky-note"></i> Note</h3>
+        <textarea id="notes" rows="2" placeholder="Dettagli visita..."></textarea>
     </div>
 
     <div class="card">
-        <h3><i class="fas fa-history"></i> Storico Minimal Studio</h3>
-        <div id="history-content">
-            <p style="text-align:center; opacity:0.5;">Nessun dato registrato</p>
-        </div>
+        <h3><i class="fas fa-history"></i> Storico</h3>
+        <div id="log-list"></div>
     </div>
 </div>
 
-<button class="btn-save" onclick="saveData()">
-    <i class="fas fa-save"></i> SALVA VISITA
-</button>
+<button class="btn-save" onclick="save()">SALVA VISITA</button>
 
-<div class="footer-text">
-    PROGETTO <a href="https://linktr.ee/minimal_studio" target="_blank">MINIMAL STUDIO</a> &copy; 2026
+<div class="footer">
+    Progetto <a href="https://linktr.ee/minimal_studio" target="_blank">Minimal Studio</a>
 </div>
 
 <script>
-    // Recupero Parametro Arnia
-    const params = new URLSearchParams(window.location.search);
-    const aID = params.get('a') || '0';
-    document.getElementById('arnia-num').innerText = "A " + aID;
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('a') || 'Generica';
+    document.getElementById('arnia-display').innerText = "Arnia " + id;
 
-    // Gestione Blocco Covata (21 giorni)
-    function checkBlock() {
-        const dateVal = document.getElementById('block-start').value;
-        if (!dateVal) return;
-        const start = new Date(dateVal);
-        const today = new Date();
-        const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
-        const remaining = 21 - diff;
-        
-        const alarm = document.getElementById('block-alarm');
-        if (remaining >= 0) {
-            alarm.style.display = "block";
-            document.getElementById('days-left').innerText = remaining;
-        } else {
-            alarm.style.display = "none";
-        }
+    function updateBlock() {
+        const val = document.getElementById('block-start').value;
+        if (!val) return;
+        const d = Math.floor((new Date() - new Date(val)) / (1000*60*60*24));
+        const r = 21 - d;
+        document.getElementById('block-msg').style.display = r >= 0 ? "block" : "none";
+        document.getElementById('days').innerText = r;
     }
 
-    // Salvataggio e Storico
-    function saveData() {
-        const visit = {
-            ts: new Date().toLocaleDateString('it-IT', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
-            rs: document.getElementById('reg-status').value,
-            ct: document.getElementById('cell-type').value,
+    function save() {
+        const entry = {
+            date: new Date().toLocaleString('it-IT'),
+            reg: document.getElementById('reg-status').value,
+            cel: document.getElementById('cell-type').value,
             cd: document.getElementById('cell-date').value || '-',
-            bs: document.getElementById('block-start').value || 'No',
-            nt: document.getElementById('visit-notes').value || 'Nessuna nota'
+            blk: document.getElementById('block-start').value || 'No',
+            txt: document.getElementById('notes').value || '-'
         };
-
-        let storageKey = 'minimal_bees_v4_' + aID;
-        let logs = JSON.parse(localStorage.getItem(storageKey)) || [];
-        logs.unshift(visit);
-        localStorage.setItem(storageKey, JSON.stringify(logs.slice(0, 20)));
-        
-        renderHistory();
-        alert("Visita Arnia " + aID + " archiviata correttamente!");
-        document.getElementById('visit-notes').value = "";
+        let data = JSON.parse(localStorage.getItem('bt_data_' + id)) || [];
+        data.unshift(entry);
+        localStorage.setItem('bt_data_' + id, JSON.stringify(data.slice(0, 15)));
+        showLogs();
+        alert("Dati salvati!");
+        document.getElementById('notes').value = "";
     }
 
-    function renderHistory() {
-        let storageKey = 'minimal_bees_v4_' + aID;
-        let logs = JSON.parse(localStorage.getItem(storageKey)) || [];
-        const container = document.getElementById('history-content');
-        
-        if (logs.length === 0) return;
-        
-        container.innerHTML = logs.map(l => `
+    function showLogs() {
+        let data = JSON.parse(localStorage.getItem('bt_data_' + id)) || [];
+        document.getElementById('log-list').innerHTML = data.map(i => `
             <div class="history-item">
-                <span class="history-date">${l.ts}</span>
-                <div style="font-size:0.9rem; line-height:1.5;">
-                    <strong>Regina:</strong> ${l.rs} | <strong>Celle:</strong> ${l.ct}<br>
-                    <strong>Data Celle:</strong> ${l.cd} | <strong>Blocco:</strong> ${l.bs}<br>
-                    <p style="margin:5px 0 0 0; color:#bdc3c7; font-style:italic;">"${l.nt}"</p>
-                </div>
+                <strong>${i.date}</strong><br>
+                R: ${i.reg} | C: ${i.cel} (${i.cd})<br>
+                Blocco: ${i.blk} | Note: ${i.txt}
             </div>
         `).join('');
     }
-
-    renderHistory();
+    showLogs();
 </script>
-
 </body>
 </html>
